@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lot Details | Cordes Lakes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:#F5F3EE; --surface:#fff; --border:#E2DDD6; --text:#1A1916;
+  --muted:#5A5855; --gold:#C17B2F; --gold-light:#D9963E; --gold-pale:#F5EBD9;
+  --blue:#4A6FA5; --teal:#2E8B6E; --gray:#B0ACA8;
+  --r:8px; --shadow:0 2px 8px rgba(26,25,22,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.nav-back{display:inline-flex;align-items:center;gap:7px;color:var(--gold);text-decoration:none;font-size:14px;font-weight:600;transition:opacity .15s}
+.nav-back:hover{opacity:.75}
+.nav-back svg{width:16px;height:16px;flex-shrink:0}
+.nav-title{font-size:14px;color:var(--muted);margin-left:4px}
+.accent{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light),#E8B96A)}
+
+/* MAIN LAYOUT */
+.main{max-width:1100px;margin:28px auto;padding:0 24px 48px;display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+@media(max-width:860px){.main{grid-template-columns:1fr}}
+
+/* PDF VIEWER */
+.pdf-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.pdf-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pdf-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.pdf-download{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--gold);text-decoration:none;border:1px solid var(--gold);border-radius:20px;padding:4px 12px;transition:all .15s}
+.pdf-download:hover{background:var(--gold-pale)}
+#pdf-embed{width:100%;height:700px;border:none;display:block}
+@media(max-width:640px){#pdf-embed{height:420px}}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:16px}
+
+/* LOT INFO CARD */
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.info-card .status-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.c-badge{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:3px 10px;border-radius:4px}
+.bg-off{background:#EEF2F8;color:var(--blue)}
+.bg-lst{background:var(--gold-pale);color:var(--gold)}
+.bg-pnd{background:#E6F3EF;color:var(--teal)}
+.bg-sld{background:#F0EFEE;color:var(--muted)}
+.info-price{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--text);line-height:1}
+.info-addr{font-size:17px;font-weight:700;margin-top:10px;line-height:1.3}
+.info-city{font-size:13px;color:var(--muted);margin-top:2px}
+.info-divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px}
+.info-row .lbl{color:var(--muted);font-weight:500}
+.info-row .val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500}
+.note-tag{display:inline-block;font-size:11px;font-weight:500;color:var(--gold);background:var(--gold-pale);border:1px solid #E8C98A;border-radius:4px;padding:3px 9px;margin-top:10px}
+.info-apn{margin-top:12px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px}
+
+/* CONTACT CARD */
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.contact-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.contact-card .sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.contact-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:12px;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all .15s;margin-bottom:10px}
+.btn-text{background:var(--text);color:#fff}
+.btn-text:hover{background:#333}
+.btn-email{background:var(--gold);color:#fff}
+.btn-email:hover{background:var(--gold-light)}
+.btn-call{background:var(--surface);color:var(--text);border:1.5px solid var(--border)}
+.btn-call:hover{border-color:var(--text)}
+.contact-btn svg{width:18px;height:18px;flex-shrink:0}
+.agent-row{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.agent-avatar{width:38px;height:38px;border-radius:50%;background:var(--gold-pale);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold);flex-shrink:0}
+.agent-info .name{font-size:13px;font-weight:600}
+.agent-info .brok{font-size:11px;color:var(--muted)}
+
+/* BACK TO TOP */
+.footer-note{text-align:center;font-size:11px;color:var(--muted);padding:24px 0}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 12L6 8l4-4"/>
+    </svg>
+    Back to Portfolio
+  </a>
+  <span class="nav-title" id="nav-subtitle">Cordes Lakes Land Portfolio</span>
+</nav>
+<div class="accent"></div>
+
+<div class="main">
+  <!-- PDF VIEWER -->
+  <div class="pdf-wrap">
+    <div class="pdf-header">
+      <span class="pdf-title">Property Listing Sheet</span>
+      <a id="pdf-dl" href="#" download class="pdf-download">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 13h10"/></svg>
+        Download PDF
+      </a>
+    </div>
+    <iframe id="pdf-embed" src="" title="Lot listing sheet"></iframe>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <!-- LOT INFO -->
+    <div class="info-card">
+      <div class="status-row">
+        <span class="c-badge" id="info-badge">—</span>
+        <span class="info-price" id="info-price">—</span>
+      </div>
+      <div class="info-addr" id="info-addr">—</div>
+      <div class="info-city">Mayer, AZ 86333</div>
+      <hr class="info-divider" />
+      <div class="info-row"><span class="lbl">Acres</span><span class="val" id="info-ac">—</span></div>
+      <div class="info-row"><span class="lbl">Sq Ft</span><span class="val" id="info-sf">—</span></div>
+      <div class="info-row"><span class="lbl">Zoning</span><span class="val" id="info-zone">—</span></div>
+      <div id="info-note-wrap" style="display:none"><span class="note-tag" id="info-note"></span></div>
+      <div class="info-apn" id="info-apn">APN —</div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-card">
+      <h3>Interested in this lot?</h3>
+      <p class="sub">Contact Brody DeMore · Morgan Taylor Realty</p>
+
+      <a id="btn-text" href="sms:14804153211" class="contact-btn btn-text">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Send a Text
+      </a>
+      <a id="btn-email" href="mailto:brody.demore@gmail.com" class="contact-btn btn-email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+        Send an Email
+      </a>
+      <a href="tel:4804153211" class="contact-btn btn-call">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 .01h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Call (480) 415-3211
+      </a>
+
+      <div class="agent-row">
+        <div class="agent-avatar">BD</div>
+        <div class="agent-info">
+          <div class="name">Brody DeMore</div>
+          <div class="brok">Morgan Taylor Realty · Lic #SA718514000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-note">No HOA &middot; No Sewer &middot; All lots zoned residential &middot; Yavapai County</div>
+
+<script>
+var lots = [
+  {id:1,  s:"offmarket", a:"20651 E Mesa Verde Rd, Unit 1",     apn:"500-04-248", p:20000, ac:0.184, sf:8003,  z:"R1L-10"},
+  {id:2,  s:"offmarket", a:"16452 S Cordes Lakes Dr, Unit 4",   apn:"500-28-262", p:20000, ac:0.284, sf:12390, z:"R1L-10"},
+  {id:3,  s:"offmarket", a:"20090 E Antelope Rd, Unit 4",       apn:"500-28-349", p:18000, ac:0.161, sf:7001,  z:"R1L-10"},
+  {id:4,  s:"offmarket", a:"16192 S Angus Cir, Unit 4",         apn:"500-28-407", p:20000, ac:0.207, sf:9011,  z:"R1L-10"},
+  {id:5,  s:"offmarket", a:"16788 S Redondo Cir, Unit 5",       apn:"500-29-087", p:25000, ac:0.294, sf:12787, z:"R1-10"},
+  {id:6,  s:"pending",   a:"20809 E Monte Vista Rd, Unit 5",    apn:"500-29-187", p:15000, ac:0.193, sf:8390,  z:"R1-10"},
+  {id:7,  s:"offmarket", a:"20940 E Monte Vista Rd, Unit 5",    apn:"500-29-202", p:16000, ac:0.161, sf:7001,  z:"R1-10"},
+  {id:8,  s:"offmarket", a:"16744 S Cordes Cir W, Unit 5",      apn:"500-29-334", p:12000, ac:0.294, sf:12802, z:"R1L-10"},
+  {id:9,  s:"offmarket", a:"19627 E Chaparral Dr, Unit 6",      apn:"500-30-489", p:20000, ac:0.318, sf:13847, z:"R1L-12", note:"Package deal (4 lots)"},
+  {id:10, s:"offmarket", a:"19613 E Chaparral Dr, Unit 6",      apn:"500-30-490", p:21000, ac:0.317, sf:13788, z:"R1L-12", note:"Package deal (4 lots)"},
+  {id:11, s:"offmarket", a:"19549 E Chaparral Dr, Unit 6",      apn:"500-30-492", p:20000, ac:0.314, sf:13662, z:"R1L-12", note:"Package deal (4 lots)"},
+  {id:12, s:"offmarket", a:"19758 E Antelope Rd, Unit 6",       apn:"500-30-076", p:21000, ac:0.330, sf:14376, z:"R1L-12"},
+  {id:13, s:"listed",    a:"20619 E Mesa Verde Rd, Unit 1",     apn:"500-04-250", p:15900, ac:0.184, sf:8003,  z:"R1L-10", note:"2 lots together"},
+  {id:14, s:"listed",    a:"19827 E Stagecoach Trl, Unit 6",    apn:"500-30-145", p:24900, ac:0.233, sf:10144, z:"R2-4",   note:"Multi-family zoning"},
+  {id:15, s:"listed",    a:"19815 E Stagecoach Trl, Unit 6",    apn:"500-30-146", p:20000, ac:0.277, sf:12075, z:"R2-4",   note:"Multi-family zoning"},
+  {id:16, s:"listed",    a:"19729 E Sage Brush Dr, Unit 6",     apn:"500-30-459", p:20000, ac:0.287, sf:12497, z:"R1L-12"},
+  {id:17, s:"listed",    a:"20659 E Cactus Wren Dr, Unit 8",    apn:"500-32-294", p:17500, ac:0.202, sf:8802,  z:"R1-10"},
+  {id:18, s:"listed",    a:"19836 E Fremont Dr, Unit 5",        apn:"500-29-570", p:20000, ac:0.282, sf:12279, z:"R1L-10"},
+  {id:19, s:"pending",   a:"20395 E Fremont Dr, Unit 5",        apn:"500-29-059", p:20000, ac:0.369, sf:16090, z:"R1L-10"},
+  {id:20, s:"offmarket", a:"20544 E Wagon Way, Unit 4",         apn:"500-28-219", p:15000, ac:0.161, sf:7001,  z:"R1L-10"},
+];
+
+var LABEL  = {offmarket:"Off MLS", listed:"Listed", pending:"Pending", sold:"Sold"};
+var BADGEC = {offmarket:"bg-off",  listed:"bg-lst",  pending:"bg-pnd",  sold:"bg-sld"};
+
+function getParam(name) {
+  var params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
+var lotId = parseInt(getParam('id'), 10);
+var lot = null;
+for (var i = 0; i < lots.length; i++) {
+  if (lots[i].id === lotId) { lot = lots[i]; break; }
+}
+
+if (lot) {
+  var pdfPath = 'pdfs/lot_' + lot.id + '.pdf';
+
+  // PDF viewer
+  document.getElementById('pdf-embed').src = pdfPath;
+  document.getElementById('pdf-dl').href = pdfPath;
+  document.getElementById('pdf-dl').download = 'lot_' + lot.id + '_listing.pdf';
+
+  // Nav
+  document.getElementById('nav-subtitle').textContent = lot.a + ', Mayer AZ';
+  document.title = lot.a + ' | Cordes Lakes';
+
+  // Info card
+  document.getElementById('info-badge').textContent = LABEL[lot.s];
+  document.getElementById('info-badge').className = 'c-badge ' + BADGEC[lot.s];
+  document.getElementById('info-price').textContent = '$' + lot.p.toLocaleString();
+  document.getElementById('info-addr').textContent = lot.a;
+  document.getElementById('info-ac').textContent = lot.ac + ' ac';
+  document.getElementById('info-sf').textContent = lot.sf.toLocaleString() + ' sqft';
+  document.getElementById('info-zone').textContent = lot.z;
+  document.getElementById('info-apn').textContent = 'APN ' + lot.apn;
+
+  if (lot.note) {
+    document.getElementById('info-note-wrap').style.display = 'block';
+    document.getElementById('info-note').textContent = '● ' + lot.note;
+  }
+
+  // Pre-fill email subject with address
+  var emailLink = 'mailto:brody.demore@gmail.com?subject=Interested%20in%20' + encodeURIComponent(lot.a + ', Mayer AZ 86333');
+  document.getElementById('btn-email').href = emailLink;
+
+  // Pre-fill SMS body
+  var smsLink = 'sms:14804153211?body=Hi%20Brody%2C%20I%27m%20interested%20in%20' + encodeURIComponent(lot.a + ', Mayer AZ 86333 ($' + lot.p.toLocaleString() + ')');
+  document.getElementById('btn-text').href = smsLink;
+
+} else {
+  document.getElementById('info-addr').textContent = 'Lot not found';
+}
+</script>
+</body>
+</html>

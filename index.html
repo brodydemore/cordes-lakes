@@ -5,723 +5,333 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Cordes Lakes Land Portfolio | Brody DeMore</title>
 <meta name="description" content="28 residential lots in Cordes Lakes, Mayer AZ 86333. No HOA. Licensed agent Brody DeMore – Morgan Taylor Realty." />
-
-<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-<!-- Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WPcE=" crossorigin=""></script>
-
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <style>
 :root {
-  --bg: #F5F3EE;
-  --surface: #FFFFFF;
-  --border: #E2DDD6;
-  --text: #1A1916;
-  --text-muted: #5A5855;
-  --gold: #C17B2F;
-  --gold-light: #D9963E;
-  --gold-pale: #F5EBD9;
-  --blue: #4A6FA5;
-  --teal: #2E8B6E;
-  --gray: #B0ACA8;
-  --red: #C0392B;
-  --font: 'DM Sans', sans-serif;
-  --mono: 'DM Mono', monospace;
-  --radius: 8px;
-  --shadow: 0 2px 8px rgba(26,25,22,0.08);
-  --shadow-hover: 0 8px 24px rgba(26,25,22,0.13);
+  --bg:#F5F3EE; --surface:#fff; --border:#E2DDD6; --text:#1A1916;
+  --muted:#5A5855; --gold:#C17B2F; --gold-light:#D9963E; --gold-pale:#F5EBD9;
+  --blue:#4A6FA5; --teal:#2E8B6E; --gray:#B0ACA8;
+  --r:8px; --shadow:0 2px 8px rgba(26,25,22,.08); --shadow-h:0 8px 24px rgba(26,25,22,.14);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* HEADER */
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:28px 24px 22px}
+.hdr-in{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.hdr h1{font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-.8px;line-height:1.1}
+.hdr .sub{font-size:16px;color:var(--muted);margin-top:6px;font-weight:400}
+.hdr-r{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.hdr-r .name{font-size:15px;font-weight:600}
+.hdr-r .brok{font-size:13px;color:var(--muted)}
+.hdr-r .contact{font-size:13px;color:var(--muted)}
+.hdr-r .contact a{color:var(--gold);text-decoration:none;font-weight:500}
+.hdr-r .contact a:hover{text-decoration:underline}
+.badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold-pale);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
 
-html { scroll-behavior: smooth; }
+.accent{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light),#E8B96A)}
+.proof{background:#1E5C3A;color:#fff;text-align:center;padding:9px 16px;font-size:13px;font-weight:500}
+.noHoa{background:var(--bg);border-bottom:1px solid var(--border);text-align:center;padding:7px;font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
 
-body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
+/* STATS */
+.stats{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px}
+.stats-in{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center}
+.stat{flex:1 1 90px;text-align:center;padding:8px 10px;border-right:1px solid var(--border);min-width:80px}
+.stat:last-child{border-right:none}
+.stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600}
+.stat-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;line-height:1.1;margin-top:2px}
+.stat-val.gold{color:var(--gold)}
 
-/* ───── HEADER ───── */
-.site-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 20px 24px 16px;
-}
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.header-left h1 {
-  font-size: clamp(22px, 3vw, 30px);
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--text);
-  line-height: 1.1;
-}
-.header-left .subtitle {
-  font-size: 14px;
-  color: var(--text-muted);
-  margin-top: 4px;
-  font-weight: 400;
-}
-.header-right {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-.agent-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-}
-.agent-brokerage {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-.agent-contact {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-.agent-contact a {
-  color: var(--gold);
-  text-decoration: none;
-  font-weight: 500;
-}
-.agent-contact a:hover { text-decoration: underline; }
-.badge-licensed {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--gold-pale);
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-}
+/* MAP */
+.map-wrap{max-width:1200px;margin:24px auto 0;padding:0 24px}
+#map{height:420px;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
+@media(max-width:640px){#map{height:260px}}
 
-/* accent bar */
-.accent-bar {
-  height: 4px;
-  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, #E8B96A 100%);
-}
+/* FILTER */
+.filter-bar{max-width:1200px;margin:18px auto 0;padding:0 24px;display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.f-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.f-btns{display:flex;gap:8px;flex-wrap:wrap}
+.f-btn{display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:5px 13px;font-size:13px;font-weight:500;color:var(--muted);transition:all .15s;user-select:none}
+.f-btn.on-blue{background:#EEF2F8;border-color:var(--blue);color:var(--blue)}
+.f-btn.on-gold{background:var(--gold-pale);border-color:var(--gold);color:var(--gold)}
+.f-btn.on-teal{background:#E6F3EF;border-color:var(--teal);color:var(--teal)}
+.f-btn.on-gray{background:#F0EFEE;border-color:var(--gray);color:var(--muted)}
+.f-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.sort-sel{margin-left:auto;font-family:'DM Sans',sans-serif;font-size:13px;padding:6px 12px;border:1.5px solid var(--border);border-radius:20px;background:var(--surface);color:var(--text);cursor:pointer;outline:none}
+.sort-sel:focus{border-color:var(--gold)}
 
-/* social proof */
-.social-proof {
-  background: #1E5C3A;
-  color: #fff;
-  text-align: center;
-  padding: 9px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-}
+/* CARDS */
+.cards-wrap{max-width:1400px;margin:18px auto 0;padding:0 24px 40px}
+.cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1100px){.cards-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:780px){.cards-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.cards-grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:default}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-h)}
+.card.listed{border-left-color:var(--gold)}
+.card.pending{border-left-color:var(--teal)}
+.card.sold{border-left-color:var(--gray);opacity:.8}
+.stamp{position:absolute;top:14px;right:-24px;background:var(--gray);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 30px;transform:rotate(45deg);text-transform:uppercase}
+.c-addr{font-size:14px;font-weight:600;line-height:1.3;padding-right:20px}
+.c-city{font-size:12px;color:var(--muted);margin-top:1px}
+.c-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.c-badge{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:2px 8px;border-radius:4px}
+.bg-off{background:#EEF2F8;color:var(--blue)}
+.bg-lst{background:var(--gold-pale);color:var(--gold)}
+.bg-pnd{background:#E6F3EF;color:var(--teal)}
+.bg-sld{background:#F0EFEE;color:var(--muted)}
+.c-price{font-family:'DM Mono',monospace;font-size:18px;font-weight:500}
+.c-price.thru{text-decoration:line-through;color:var(--muted);font-size:16px}
+.c-meta{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.chip{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 7px}
+.note{display:inline-block;font-size:11px;font-weight:500;color:var(--gold);background:var(--gold-pale);border:1px solid #E8C98A;border-radius:4px;padding:2px 8px;margin-top:8px}
+.c-apn{margin-top:10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px}
+.c-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;border-top:1px solid var(--border);padding-top:8px}
+.c-details{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--gold);text-decoration:none;letter-spacing:.2px;transition:opacity .15s}
+.c-details:hover{opacity:.7}
+.c-details svg{width:11px;height:11px}
 
-/* no hoa bar */
-.noHoa-bar {
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  text-align: center;
-  padding: 7px 16px;
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-}
+/* FOOTER */
+.footer{max-width:1200px;margin:0 auto;padding:24px 24px 32px;border-top:1px solid var(--border);text-align:center}
+.footer p{font-size:12px;color:var(--muted);line-height:1.9}
+.footer a{color:var(--gold);text-decoration:none}
+.footer a:hover{text-decoration:underline}
 
-/* ───── STATS ───── */
-.stats-row {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 24px;
-}
-.stats-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: 0;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.stat {
-  flex: 1 1 100px;
-  text-align: center;
-  padding: 8px 12px;
-  border-right: 1px solid var(--border);
-  min-width: 90px;
-}
-.stat:last-child { border-right: none; }
-.stat-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-.stat-value {
-  font-family: var(--mono);
-  font-size: 24px;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.1;
-  margin-top: 2px;
-}
-.stat-value.gold { color: var(--gold); }
-
-/* ───── MAP ───── */
-.map-section {
-  max-width: 1200px;
-  margin: 24px auto 0;
-  padding: 0 24px;
-}
-#map {
-  height: 420px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-@media (max-width: 640px) { #map { height: 260px; } }
-
-/* ───── FILTER BAR ───── */
-.filter-bar {
-  max-width: 1200px;
-  margin: 20px auto 0;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.filter-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--text-muted);
-  margin-right: 4px;
-}
-.filter-checks {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.filter-check {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  user-select: none;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.15s;
-}
-.filter-check:hover { border-color: var(--text-muted); }
-.filter-check input { display: none; }
-.filter-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.filter-check.active-blue { background: #EEF2F8; border-color: var(--blue); color: var(--blue); }
-.filter-check.active-gold { background: var(--gold-pale); border-color: var(--gold); color: var(--gold); }
-.filter-check.active-teal { background: #E6F3EF; border-color: var(--teal); color: var(--teal); }
-.filter-check.active-gray { background: #F0EFEE; border-color: var(--gray); color: var(--text-muted); }
-
-.sort-select {
-  margin-left: auto;
-  font-family: var(--font);
-  font-size: 13px;
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  outline: none;
-}
-.sort-select:focus { border-color: var(--gold); }
-
-/* ───── CARDS ───── */
-.cards-section {
-  max-width: 1200px;
-  margin: 20px auto 0;
-  padding: 0 24px;
-}
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-}
-.lot-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--blue);
-  border-radius: var(--radius);
-  padding: 16px;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.15s, box-shadow 0.15s;
-  cursor: default;
-}
-.lot-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
-}
-.lot-card.status-listed { border-left-color: var(--gold); }
-.lot-card.status-pending { border-left-color: var(--teal); }
-.lot-card.status-sold { border-left-color: var(--gray); opacity: 0.82; }
-
-/* sold stamp */
-.sold-stamp {
-  position: absolute;
-  top: 12px;
-  right: -22px;
-  background: var(--gray);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 3px 28px;
-  transform: rotate(45deg);
-  transform-origin: center;
-  text-transform: uppercase;
-}
-
-.card-address {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.3;
-  padding-right: 24px;
-}
-.card-city {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 1px;
-}
-.card-status-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-.status-badge {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-.badge-offmarket { background: #EEF2F8; color: var(--blue); }
-.badge-listed { background: var(--gold-pale); color: var(--gold); }
-.badge-pending { background: #E6F3EF; color: var(--teal); }
-.badge-sold { background: #F0EFEE; color: var(--text-muted); }
-
-.card-price {
-  font-family: var(--mono);
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--text);
-}
-.card-price.sold-price {
-  text-decoration: line-through;
-  color: var(--text-muted);
-  font-size: 16px;
-}
-.card-meta {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-.meta-chip {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-muted);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 2px 7px;
-}
-.note-tag {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--gold);
-  background: var(--gold-pale);
-  border: 1px solid #E8C98A;
-  border-radius: 4px;
-  padding: 2px 8px;
-  margin-top: 8px;
-}
-.card-apn {
-  margin-top: 10px;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
-  padding-top: 8px;
-}
-
-/* ───── FOOTER ───── */
-.site-footer {
-  max-width: 1200px;
-  margin: 40px auto 0;
-  padding: 24px 24px 32px;
-  border-top: 1px solid var(--border);
-}
-.footer-top {
-  font-size: 12px;
-  color: var(--text-muted);
-  text-align: center;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-.footer-logos {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  margin: 12px 0;
-}
-.footer-eho {
-  width: 28px;
-  height: auto;
-  opacity: 0.6;
-}
-.footer-copy {
-  text-align: center;
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.8;
-}
-.footer-copy a {
-  color: var(--gold);
-  text-decoration: none;
-}
-.footer-copy a:hover { text-decoration: underline; }
-
-/* hidden */
-.hidden { display: none !important; }
-
-/* leaflet popup */
-.leaflet-popup-content-wrapper {
-  border-radius: 8px !important;
-  font-family: var(--font) !important;
-  font-size: 13px !important;
-}
-.popup-addr { font-weight: 600; margin-bottom: 4px; }
-.popup-price { font-family: 'DM Mono', monospace; color: var(--gold); font-size: 15px; }
-.popup-meta { color: var(--text-muted); font-size: 12px; margin-top: 3px; }
+/* Leaflet popup */
+.leaflet-popup-content-wrapper{border-radius:8px!important;font-family:'DM Sans',sans-serif!important;font-size:13px!important}
+.pu-addr{font-weight:600;margin-bottom:4px}
+.pu-price{font-family:'DM Mono',monospace;color:var(--gold);font-size:15px}
+.pu-meta{color:var(--muted);font-size:12px;margin-top:3px}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="header-inner">
-    <div class="header-left">
+<header class="hdr">
+  <div class="hdr-in">
+    <div>
       <h1>Cordes Lakes Land Portfolio</h1>
-      <p class="subtitle">Mayer, AZ 86333 &middot; Yavapai County</p>
+      <p class="sub">Mayer, AZ 86333 &middot; Yavapai County</p>
     </div>
-    <div class="header-right">
-      <span class="agent-name">Brody DeMore</span>
-      <span class="agent-brokerage">Morgan Taylor Realty</span>
-      <span class="agent-contact">
-        <a href="tel:4804153211">(480) 415-3211</a> &middot;
-        <a href="mailto:brody.demore@gmail.com">brody.demore@gmail.com</a>
-      </span>
-      <span class="badge-licensed">&#10022; Arizona Licensed Agent</span>
+    <div class="hdr-r">
+      <span class="name">Brody DeMore</span>
+      <span class="brok">Morgan Taylor Realty</span>
+      <span class="contact"><a href="tel:4804153211">(480) 415-3211</a> &middot; <a href="mailto:brody.demore@gmail.com">brody.demore@gmail.com</a></span>
+      <span class="badge">&#10022; Arizona Licensed Agent</span>
     </div>
   </div>
 </header>
 
-<div class="accent-bar"></div>
+<div class="accent"></div>
+<div class="proof">&#10003; 8 lots sold in 2026 &middot; Cordes Lakes, Mayer AZ</div>
+<div class="noHoa">No HOA &middot; All lots zoned residential &middot; Mayer, AZ 86333</div>
 
-<div class="social-proof">&#10003; 8 lots sold since January 1, 2026 &middot; Cordes Lakes, Mayer AZ</div>
-
-<div class="noHoa-bar">No HOA &middot; All lots zoned residential &middot; Mayer, AZ 86333</div>
-
-<!-- STATS -->
-<div class="stats-row">
-  <div class="stats-inner">
-    <div class="stat"><div class="stat-label">Total Lots</div><div class="stat-value" id="stat-total">28</div></div>
-    <div class="stat"><div class="stat-label">Available</div><div class="stat-value gold" id="stat-available">18</div></div>
-    <div class="stat"><div class="stat-label">Listed</div><div class="stat-value" id="stat-listed">6</div></div>
-    <div class="stat"><div class="stat-label">Off MLS</div><div class="stat-value" id="stat-offmls">12</div></div>
-    <div class="stat"><div class="stat-label">Pending</div><div class="stat-value" id="stat-pending">2</div></div>
-    <div class="stat"><div class="stat-label">Sold</div><div class="stat-value" id="stat-sold">8</div></div>
+<div class="stats">
+  <div class="stats-in">
+    <div class="stat"><div class="stat-lbl">Total Lots</div><div class="stat-val">28</div></div>
+    <div class="stat"><div class="stat-lbl">Available</div><div class="stat-val gold">18</div></div>
+    <div class="stat"><div class="stat-lbl">Listed</div><div class="stat-val">6</div></div>
+    <div class="stat"><div class="stat-lbl">Off MLS</div><div class="stat-val">12</div></div>
+    <div class="stat"><div class="stat-lbl">Pending</div><div class="stat-val">2</div></div>
+    <div class="stat"><div class="stat-lbl">Sold</div><div class="stat-val">8</div></div>
   </div>
 </div>
 
-<!-- MAP -->
-<div class="map-section">
-  <div id="map"></div>
-</div>
+<div class="map-wrap"><div id="map"></div></div>
 
-<!-- FILTER BAR -->
 <div class="filter-bar">
-  <span class="filter-label">Filter</span>
-  <div class="filter-checks">
-    <label class="filter-check active-blue" id="fc-offmarket">
-      <input type="checkbox" value="offmarket" checked />
-      <span class="filter-dot" style="background:var(--blue)"></span>
-      Off MLS
-    </label>
-    <label class="filter-check active-gold" id="fc-listed">
-      <input type="checkbox" value="listed" checked />
-      <span class="filter-dot" style="background:var(--gold)"></span>
-      Listed
-    </label>
-    <label class="filter-check active-teal" id="fc-pending">
-      <input type="checkbox" value="pending" checked />
-      <span class="filter-dot" style="background:var(--teal)"></span>
-      Pending
-    </label>
-    <label class="filter-check active-gray" id="fc-sold">
-      <input type="checkbox" value="sold" checked />
-      <span class="filter-dot" style="background:var(--gray)"></span>
-      Sold
-    </label>
+  <span class="f-label">Filter</span>
+  <div class="f-btns">
+    <div class="f-btn on-blue" data-status="offmarket"><span class="f-dot" style="background:#4A6FA5"></span>Off MLS</div>
+    <div class="f-btn on-gold" data-status="listed"><span class="f-dot" style="background:#C17B2F"></span>Listed</div>
+    <div class="f-btn on-teal" data-status="pending"><span class="f-dot" style="background:#2E8B6E"></span>Pending</div>
+    <div class="f-btn on-gray" data-status="sold"><span class="f-dot" style="background:#B0ACA8"></span>Sold</div>
   </div>
-  <select class="sort-select" id="sort-select">
+  <select class="sort-sel" id="sort-sel">
     <option value="default">Default Order</option>
-    <option value="price-asc">Price: Low → High</option>
-    <option value="price-desc">Price: High → Low</option>
+    <option value="price-asc">Price: Low &rarr; High</option>
+    <option value="price-desc">Price: High &rarr; Low</option>
     <option value="size-desc">Largest First</option>
     <option value="size-asc">Smallest First</option>
   </select>
 </div>
 
-<!-- CARDS -->
-<div class="cards-section">
-  <div class="cards-grid" id="cards-grid"></div>
-</div>
+<div class="cards-wrap"><div class="cards-grid" id="cards-grid"></div></div>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="footer-top">No HOA &middot; No Sewer &middot; All lots zoned residential &middot; Yavapai County</div>
-  <div class="footer-logos">
-    <!-- Equal Housing Opportunity SVG inline -->
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" title="Equal Housing Opportunity" style="opacity:.55">
-      <rect x="3" y="13" width="22" height="13" rx="1" stroke="#5A5855" stroke-width="1.5" fill="none"/>
-      <path d="M1 14L14 3L27 14" stroke="#5A5855" stroke-width="1.5" stroke-linecap="round"/>
-      <rect x="10" y="18" width="8" height="8" rx="0.5" stroke="#5A5855" stroke-width="1.2" fill="none"/>
-    </svg>
-  </div>
-  <div class="footer-copy">
-    &copy; 2026 Brody DeMore &middot; Morgan Taylor Realty &middot; License #SA718514000<br />
-    <a href="tel:4804153211">(480) 415-3211</a> &middot; <a href="mailto:brody.demore@gmail.com">brody.demore@gmail.com</a><br />
-    <span style="font-size:11px;">Last updated: June 1, 2026</span>
-  </div>
+<footer class="footer">
+  <p>No HOA &middot; No Sewer &middot; All lots zoned residential &middot; Yavapai County</p>
+  <p>&copy; 2026 Brody DeMore &middot; Morgan Taylor Realty &middot; License #SA718514000</p>
+  <p><a href="tel:4804153211">(480) 415-3211</a> &middot; <a href="mailto:brody.demore@gmail.com">brody.demore@gmail.com</a></p>
+  <p style="font-size:11px;margin-top:4px">Last updated: June 1, 2026</p>
 </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
-// ─────────────────────────────────────────────
-// LOT DATA
-// ─────────────────────────────────────────────
-const lots = [
-  // OFF MARKET
-  { id:1, status:"offmarket", address:"20651 E Mesa Verde Rd, Unit 1", apn:"500-04-248", price:20000, acres:0.184, sqft:8003, zone:"R1L-10", lat:34.307105, lng:-112.101302 },
-  { id:2, status:"offmarket", address:"16452 S Cordes Lakes Dr, Unit 4", apn:"500-28-262", price:20000, acres:0.284, sqft:12390, zone:"R1L-10", lat:34.3039793, lng:-112.1059324 },
-  { id:3, status:"offmarket", address:"20090 E Antelope Rd, Unit 4", apn:"500-28-349", price:18000, acres:0.161, sqft:7001, zone:"R1L-10", lat:34.3062264, lng:-112.109174 },
-  { id:4, status:"offmarket", address:"16192 S Angus Cir, Unit 4", apn:"500-28-407", price:20000, acres:0.207, sqft:9011, zone:"R1L-10", lat:34.3076085, lng:-112.111124 },
-  { id:5, status:"offmarket", address:"16788 S Redondo Cir, Unit 5", apn:"500-29-087", price:25000, acres:0.294, sqft:12787, zone:"R1-10", lat:34.2996206, lng:-112.1005257 },
-  { id:6, status:"offmarket", address:"20809 E Monte Vista Rd, Unit 5", apn:"500-29-187", price:16000, acres:0.193, sqft:8390, zone:"R1-10", lat:34.2992455, lng:-112.097522 },
-  { id:7, status:"offmarket", address:"20940 E Monte Vista Rd, Unit 5", apn:"500-29-202", price:16000, acres:0.161, sqft:7001, zone:"R1-10", lat:34.3003795, lng:-112.0953114 },
-  { id:8, status:"offmarket", address:"16744 S Cordes Cir W, Unit 5", apn:"500-29-334", price:12000, acres:0.294, sqft:12802, zone:"R1L-10", lat:34.3007995, lng:-112.107142 },
-  { id:9, status:"offmarket", address:"19627 E Chaparral Dr, Unit 6", apn:"500-30-489", price:20000, acres:0.318, sqft:13847, zone:"R1L-12", note:"Package deal (4 lots)", lat:34.3163893, lng:-112.118199 },
-  { id:10, status:"offmarket", address:"19613 E Chaparral Dr, Unit 6", apn:"500-30-490", price:21000, acres:0.317, sqft:13788, zone:"R1L-12", note:"Package deal (4 lots)", lat:34.316623, lng:-112.1185318 },
-  { id:11, status:"offmarket", address:"19549 E Chaparral Dr, Unit 6", apn:"500-30-492", price:20000, acres:0.314, sqft:13662, zone:"R1L-12", note:"Package deal (4 lots)", lat:34.3169111, lng:-112.1193395 },
-  { id:12, status:"offmarket", address:"19758 E Antelope Rd, Unit 6", apn:"500-30-076", price:21000, acres:0.330, sqft:14376, zone:"R1L-12", lat:34.3172777, lng:-112.1146928 },
-  // LISTED
-  { id:13, status:"listed", address:"20619 E Mesa Verde Rd, Unit 1", apn:"500-04-250", price:15900, acres:0.184, sqft:8003, zone:"R1L-10", note:"2 lots together", lat:34.306914, lng:-112.101795 },
-  { id:14, status:"listed", address:"19827 E Stagecoach Trl, Unit 6", apn:"500-30-145", price:24900, acres:0.233, sqft:10144, zone:"R2-4", note:"Multi-family zoning", lat:34.3186354, lng:-112.115116 },
-  { id:15, status:"listed", address:"19815 E Stagecoach Trl, Unit 6", apn:"500-30-146", price:20000, acres:0.277, sqft:12075, zone:"R2-4", note:"Multi-family zoning", lat:34.318757, lng:-112.115292 },
-  { id:16, status:"listed", address:"19729 E Sage Brush Dr, Unit 6", apn:"500-30-459", price:20000, acres:0.287, sqft:12497, zone:"R1L-12", lat:34.3146347, lng:-112.116228 },
-  { id:17, status:"listed", address:"20659 E Cactus Wren Dr, Unit 8", apn:"500-32-294", price:17500, acres:0.202, sqft:8802, zone:"R1-10", lat:34.3205777, lng:-112.10052 },
-  { id:18, status:"listed", address:"19836 E Fremont Dr, Unit 5", apn:"500-29-570", price:20000, acres:0.282, sqft:12279, zone:"R1L-10", lat:34.3100939, lng:-112.11509 },
-  // PENDING
-  { id:19, status:"pending", address:"20395 E Fremont Dr, Unit 5", apn:"500-29-059", price:20000, acres:0.369, sqft:16090, zone:"R1L-10", lat:34.2995963, lng:-112.1043705 },
-  { id:20, status:"pending", address:"20544 E Wagon Way, Unit 4", apn:"500-28-219", price:15000, acres:0.161, sqft:7001, zone:"R1L-10", lat:34.3053054, lng:-112.103153 },
-  // SOLD
-  { id:21, status:"sold", address:"20565 E Antelope Rd, Unit 4", apn:"500-28-154", price:15900, acres:0.165, sqft:7201, zone:"R1L-10", lat:34.3043054, lng:-112.102595 },
-  { id:22, status:"sold", address:"20376 E Antelope Rd, Unit 4", apn:"500-28-367", price:16500, acres:0.191, sqft:8305, zone:"R1L-10", lat:34.3047606, lng:-112.105457 },
-  { id:23, status:"sold", address:"15420 S Rolling Ridge Dr, Unit 8", apn:"500-32-225", price:18000, acres:0.212, sqft:9233, zone:"R1-10", lat:34.318078, lng:-112.095193 },
-  { id:24, status:"sold", address:"19673 E Ironwood Dr, Unit 6", apn:"500-30-505", price:20000, acres:0.292, sqft:12705, zone:"R1L-12", lat:34.3150921, lng:-112.116656 },
-  { id:25, status:"sold", address:"19865 E Conestoga Dr, Unit 6", apn:"500-30-194", price:20000, acres:0.230, sqft:10002, zone:"R1L-10", lat:34.3189769, lng:-112.114108 },
-  { id:26, status:"sold", address:"19519 E Ironwood Dr, Unit 6", apn:"500-30-516", price:18000, acres:0.276, sqft:12038, zone:"R1L-12", lat:34.3176623, lng:-112.119781 },
-  { id:27, status:"sold", address:"19632 E Ironwood Dr, Unit 6", apn:"500-30-524", price:20000, acres:0.313, sqft:13623, zone:"R1L-12", lat:34.317048, lng:-112.117098 },
-  { id:28, status:"sold", address:"16324 S Black Mountain Rd, Unit 4", apn:"500-28-248", price:19000, acres:0.161, sqft:7001, zone:"R1L-10", lat:34.305345, lng:-112.104185 },
+var lots = [
+  {id:1,  s:"offmarket", a:"20651 E Mesa Verde Rd, Unit 1",      apn:"500-04-248", p:20000, ac:0.184, sf:8003,  z:"R1L-10", lat:34.307105,   lng:-112.101302},
+  {id:2,  s:"offmarket", a:"16452 S Cordes Lakes Dr, Unit 4",    apn:"500-28-262", p:20000, ac:0.284, sf:12390, z:"R1L-10", lat:34.3039793,  lng:-112.1059324},
+  {id:3,  s:"offmarket", a:"20090 E Antelope Rd, Unit 4",        apn:"500-28-349", p:18000, ac:0.161, sf:7001,  z:"R1L-10", lat:34.3062264,  lng:-112.109174},
+  {id:4,  s:"offmarket", a:"16192 S Angus Cir, Unit 4",          apn:"500-28-407", p:20000, ac:0.207, sf:9011,  z:"R1L-10", lat:34.3076085,  lng:-112.111124},
+  {id:5,  s:"offmarket", a:"16788 S Redondo Cir, Unit 5",        apn:"500-29-087", p:25000, ac:0.294, sf:12787, z:"R1-10",  lat:34.2996206,  lng:-112.1005257},
+  {id:6,  s:"pending",   a:"20809 E Monte Vista Rd, Unit 5",     apn:"500-29-187", p:15000, ac:0.193, sf:8390,  z:"R1-10",  lat:34.2992455,  lng:-112.097522},
+  {id:7,  s:"offmarket", a:"20940 E Monte Vista Rd, Unit 5",     apn:"500-29-202", p:16000, ac:0.161, sf:7001,  z:"R1-10",  lat:34.3003795,  lng:-112.0953114},
+  {id:8,  s:"offmarket", a:"16744 S Cordes Cir W, Unit 5",       apn:"500-29-334", p:12000, ac:0.294, sf:12802, z:"R1L-10", lat:34.3007995,  lng:-112.107142},
+  {id:9,  s:"offmarket", a:"19627 E Chaparral Dr, Unit 6",       apn:"500-30-489", p:20000, ac:0.318, sf:13847, z:"R1L-12", lat:34.3163893,  lng:-112.118199,  note:"Package deal (4 lots)"},
+  {id:10, s:"offmarket", a:"19613 E Chaparral Dr, Unit 6",       apn:"500-30-490", p:21000, ac:0.317, sf:13788, z:"R1L-12", lat:34.316623,   lng:-112.1185318, note:"Package deal (4 lots)"},
+  {id:11, s:"offmarket", a:"19549 E Chaparral Dr, Unit 6",       apn:"500-30-492", p:20000, ac:0.314, sf:13662, z:"R1L-12", lat:34.3169111,  lng:-112.1193395, note:"Package deal (4 lots)"},
+  {id:12, s:"offmarket", a:"19758 E Antelope Rd, Unit 6",        apn:"500-30-076", p:21000, ac:0.330, sf:14376, z:"R1L-12", lat:34.3172777,  lng:-112.1146928},
+  {id:13, s:"listed",    a:"20619 E Mesa Verde Rd, Unit 1",      apn:"500-04-250", p:15900, ac:0.184, sf:8003,  z:"R1L-10", lat:34.306914,   lng:-112.101795,  note:"2 lots together"},
+  {id:14, s:"listed",    a:"19827 E Stagecoach Trl, Unit 6",     apn:"500-30-145", p:24900, ac:0.233, sf:10144, z:"R2-4",   lat:34.3186354,  lng:-112.115116,  note:"Multi-family zoning"},
+  {id:15, s:"listed",    a:"19815 E Stagecoach Trl, Unit 6",     apn:"500-30-146", p:20000, ac:0.277, sf:12075, z:"R2-4",   lat:34.318757,   lng:-112.115292,  note:"Multi-family zoning"},
+  {id:16, s:"listed",    a:"19729 E Sage Brush Dr, Unit 6",      apn:"500-30-459", p:20000, ac:0.287, sf:12497, z:"R1L-12", lat:34.3146347,  lng:-112.116228},
+  {id:17, s:"listed",    a:"20659 E Cactus Wren Dr, Unit 8",     apn:"500-32-294", p:17500, ac:0.202, sf:8802,  z:"R1-10",  lat:34.3205777,  lng:-112.10052},
+  {id:18, s:"listed",    a:"19836 E Fremont Dr, Unit 5",         apn:"500-29-570", p:20000, ac:0.282, sf:12279, z:"R1L-10", lat:34.3100939,  lng:-112.11509},
+  {id:19, s:"pending",   a:"20395 E Fremont Dr, Unit 5",         apn:"500-29-059", p:20000, ac:0.369, sf:16090, z:"R1L-10", lat:34.2995963,  lng:-112.1043705},
+  {id:20, s:"offmarket", a:"20544 E Wagon Way, Unit 4",          apn:"500-28-219", p:15000, ac:0.161, sf:7001,  z:"R1L-10", lat:34.3053054,  lng:-112.103153},
+  {id:21, s:"sold",      a:"20565 E Antelope Rd, Unit 4",        apn:"500-28-154", p:15900, ac:0.165, sf:7201,  z:"R1L-10", lat:34.3043054,  lng:-112.102595},
+  {id:22, s:"sold",      a:"20376 E Antelope Rd, Unit 4",        apn:"500-28-367", p:16500, ac:0.191, sf:8305,  z:"R1L-10", lat:34.3047606,  lng:-112.105457},
+  {id:23, s:"sold",      a:"15420 S Rolling Ridge Dr, Unit 8",   apn:"500-32-225", p:18000, ac:0.212, sf:9233,  z:"R1-10",  lat:34.318078,   lng:-112.095193},
+  {id:24, s:"sold",      a:"19673 E Ironwood Dr, Unit 6",        apn:"500-30-505", p:20000, ac:0.292, sf:12705, z:"R1L-12", lat:34.3150921,  lng:-112.116656},
+  {id:25, s:"sold",      a:"19865 E Conestoga Dr, Unit 6",       apn:"500-30-194", p:20000, ac:0.230, sf:10002, z:"R1L-10", lat:34.3189769,  lng:-112.114108},
+  {id:26, s:"sold",      a:"19519 E Ironwood Dr, Unit 6",        apn:"500-30-516", p:18000, ac:0.276, sf:12038, z:"R1L-12", lat:34.3176623,  lng:-112.119781},
+  {id:27, s:"sold",      a:"19632 E Ironwood Dr, Unit 6",        apn:"500-30-524", p:20000, ac:0.313, sf:13623, z:"R1L-12", lat:34.317048,   lng:-112.117098},
+  {id:28, s:"sold",      a:"16324 S Black Mountain Rd, Unit 4",  apn:"500-28-248", p:19000, ac:0.161, sf:7001,  z:"R1L-10", lat:34.305345,   lng:-112.104185}
 ];
 
-// ─────────────────────────────────────────────
-// MAP
-// ─────────────────────────────────────────────
-const statusColor = { offmarket:"#4A6FA5", listed:"#C17B2F", pending:"#2E8B6E", sold:"#B0ACA8" };
-const statusLabel = { offmarket:"Off MLS", listed:"Listed", pending:"Pending", sold:"Sold" };
-const iconSize = { offmarket:[14,14], listed:[17,17], pending:[14,14], sold:[11,11] };
+var COLOR  = {offmarket:"#4A6FA5", listed:"#C17B2F", pending:"#2E8B6E", sold:"#B0ACA8"};
+var LABEL  = {offmarket:"Off MLS", listed:"Listed",  pending:"Pending",  sold:"Sold"};
+var SIZE   = {offmarket:14,        listed:14,         pending:14,         sold:14};
+var BADGEC = {offmarket:"bg-off",  listed:"bg-lst",   pending:"bg-pnd",   sold:"bg-sld"};
 
-const map = L.map('map').setView([34.308, -112.109], 14);
+// Active filter state
+var active = {offmarket:true, listed:true, pending:true, sold:true};
+
+// ── MAP ──
+var map = L.map('map').setView([34.308, -112.109], 14);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+  attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
   maxZoom: 19
 }).addTo(map);
 
 // Legend
-const legend = L.control({ position: 'topright' });
+var legend = L.control({position:'topright'});
 legend.onAdd = function() {
-  const div = L.DomUtil.create('div');
-  div.style.cssText = 'background:#fff;padding:10px 13px;border-radius:8px;font-family:DM Sans,sans-serif;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.12);line-height:1.9;';
-  div.innerHTML = `
-    <div style="font-weight:600;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5A5855;">Legend</div>
-    <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#4A6FA5;margin-right:7px;"></span>Off MLS</div>
-    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#C17B2F;margin-right:7px;"></span>Listed</div>
-    <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#2E8B6E;margin-right:7px;"></span>Pending</div>
-    <div><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#B0ACA8;margin-right:9px;"></span>Sold</div>
-  `;
-  return div;
+  var d = L.DomUtil.create('div');
+  d.style.cssText = 'background:#fff;padding:10px 13px;border-radius:8px;font-family:DM Sans,sans-serif;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.12);line-height:2;min-width:110px';
+  d.innerHTML = '<div style="font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#5A5855;margin-bottom:4px">Legend</div>'
+    + '<div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><svg width="12" height="16" viewBox="0 0 22 30"><path d="M11 0C5.477 0 1 4.477 1 10c0 7.5 10 20 10 20S21 17.5 21 10C21 4.477 16.523 0 11 0z" fill="#4A6FA5" stroke="#fff" stroke-width="2"/><circle cx="11" cy="10" r="4" fill="#fff" opacity=".9"/></svg>Off MLS</div>'
+    + '<div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><svg width="12" height="16" viewBox="0 0 22 30"><path d="M11 0C5.477 0 1 4.477 1 10c0 7.5 10 20 10 20S21 17.5 21 10C21 4.477 16.523 0 11 0z" fill="#C17B2F" stroke="#fff" stroke-width="2"/><circle cx="11" cy="10" r="4" fill="#fff" opacity=".9"/></svg>Listed</div>'
+    + '<div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><svg width="12" height="16" viewBox="0 0 22 30"><path d="M11 0C5.477 0 1 4.477 1 10c0 7.5 10 20 10 20S21 17.5 21 10C21 4.477 16.523 0 11 0z" fill="#2E8B6E" stroke="#fff" stroke-width="2"/><circle cx="11" cy="10" r="4" fill="#fff" opacity=".9"/></svg>Pending</div>'
+    + '<div style="display:flex;align-items:center;gap:7px"><svg width="12" height="16" viewBox="0 0 22 30"><path d="M11 0C5.477 0 1 4.477 1 10c0 7.5 10 20 10 20S21 17.5 21 10C21 4.477 16.523 0 11 0z" fill="#B0ACA8" stroke="#fff" stroke-width="2"/><circle cx="11" cy="10" r="4" fill="#fff" opacity=".9"/></svg>Sold</div>';
+  return d;
 };
 legend.addTo(map);
 
 // Build markers
-const markers = {};
-lots.forEach(lot => {
-  const sz = iconSize[lot.status];
-  const icon = L.divIcon({
+var markers = {};
+lots.forEach(function(lot) {
+  var sz = SIZE[lot.s];
+  var c = COLOR[lot.s];
+  var pinHtml = '<svg width="22" height="30" viewBox="0 0 22 30" xmlns="http://www.w3.org/2000/svg">'
+    + '<path d="M11 0C5.477 0 1 4.477 1 10c0 7.5 10 20 10 20S21 17.5 21 10C21 4.477 16.523 0 11 0z" fill="'+c+'" stroke="#fff" stroke-width="1.5"/>'
+    + '<circle cx="11" cy="10" r="4" fill="#fff" opacity="0.9"/>'
+    + '</svg>';
+  var icon = L.divIcon({
     className: '',
-    html: `<div style="width:${sz[0]}px;height:${sz[1]}px;border-radius:50%;background:${statusColor[lot.status]};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);"></div>`,
-    iconSize: sz,
-    iconAnchor: [sz[0]/2, sz[1]/2],
+    html: pinHtml,
+    iconSize: [22, 30],
+    iconAnchor: [11, 30]
   });
-  const marker = L.marker([lot.lat, lot.lng], { icon })
-    .bindPopup(`
-      <div class="popup-addr">${lot.address}</div>
-      <div class="popup-price">${lot.status === 'sold' ? '<s>' : ''}$${lot.price.toLocaleString()}${lot.status === 'sold' ? '</s> SOLD' : ''}</div>
-      <div class="popup-meta">${lot.acres} ac &middot; ${lot.sqft.toLocaleString()} sqft &middot; ${lot.zone}</div>
-      <div class="popup-meta">APN: ${lot.apn}</div>
-    `)
+  var priceStr = lot.s === 'sold'
+    ? '<s>$'+lot.p.toLocaleString()+'</s> SOLD'
+    : '$'+lot.p.toLocaleString();
+  var m = L.marker([lot.lat, lot.lng], {icon:icon})
+    .bindPopup(
+      '<div class="pu-addr">'+lot.a+'</div>'
+      + '<div class="pu-price">'+priceStr+'</div>'
+      + '<div class="pu-meta">'+lot.ac+' ac &middot; '+lot.sf.toLocaleString()+' sqft &middot; '+lot.z+'</div>'
+      + '<div class="pu-meta">APN: '+lot.apn+'</div>'
+    )
     .addTo(map);
-  markers[lot.id] = marker;
+  markers[lot.id] = m;
 });
 
-// ─────────────────────────────────────────────
-// CARDS
-// ─────────────────────────────────────────────
+// ── CARDS ──
 function renderCards() {
-  const activeStatuses = getActiveStatuses();
-  const sortVal = document.getElementById('sort-select').value;
+  var sortVal = document.getElementById('sort-sel').value;
+  var filtered = lots.filter(function(l) { return active[l.s]; });
 
-  let filtered = lots.filter(l => activeStatuses.includes(l.status));
+  if (sortVal === 'price-asc')  filtered.sort(function(a,b){return a.p - b.p;});
+  if (sortVal === 'price-desc') filtered.sort(function(a,b){return b.p - a.p;});
+  if (sortVal === 'size-desc')  filtered.sort(function(a,b){return b.sf - a.sf;});
+  if (sortVal === 'size-asc')   filtered.sort(function(a,b){return a.sf - b.sf;});
 
-  if (sortVal === 'price-asc') filtered.sort((a,b) => a.price - b.price);
-  else if (sortVal === 'price-desc') filtered.sort((a,b) => b.price - a.price);
-  else if (sortVal === 'size-desc') filtered.sort((a,b) => b.sqft - a.sqft);
-  else if (sortVal === 'size-asc') filtered.sort((a,b) => a.sqft - b.sqft);
-
-  const grid = document.getElementById('cards-grid');
+  var grid = document.getElementById('cards-grid');
   grid.innerHTML = '';
 
-  filtered.forEach(lot => {
-    const card = document.createElement('div');
-    card.className = `lot-card status-${lot.status}`;
+  filtered.forEach(function(lot) {
+    var card = document.createElement('div');
+    card.className = 'card ' + lot.s;
     card.dataset.id = lot.id;
 
-    const badgeClass = {offmarket:'badge-offmarket',listed:'badge-listed',pending:'badge-pending',sold:'badge-sold'}[lot.status];
-    const priceHtml = lot.status === 'sold'
-      ? `<span class="card-price sold-price">$${lot.price.toLocaleString()}</span>`
-      : `<span class="card-price">$${lot.price.toLocaleString()}</span>`;
+    var priceHtml = lot.s === 'sold'
+      ? '<span class="c-price thru">$'+lot.p.toLocaleString()+'</span>'
+      : '<span class="c-price">$'+lot.p.toLocaleString()+'</span>';
 
-    card.innerHTML = `
-      ${lot.status === 'sold' ? '<div class="sold-stamp">SOLD</div>' : ''}
-      <div class="card-address">${lot.address}</div>
-      <div class="card-city">Mayer, AZ 86333</div>
-      <div class="card-status-row">
-        <span class="status-badge ${badgeClass}">${statusLabel[lot.status]}</span>
-        ${priceHtml}
-      </div>
-      <div class="card-meta">
-        <span class="meta-chip">${lot.acres} ac</span>
-        <span class="meta-chip">${lot.sqft.toLocaleString()} sqft</span>
-        <span class="meta-chip">${lot.zone}</span>
-      </div>
-      ${lot.note ? `<div class="note-tag">&#9679; ${lot.note}</div>` : ''}
-      <div class="card-apn">APN ${lot.apn}</div>
-    `;
+    card.innerHTML =
+      (lot.s === 'sold' ? '<div class="stamp">SOLD</div>' : '')
+      + '<div class="c-addr">'+lot.a+'</div>'
+      + '<div class="c-city">Mayer, AZ 86333</div>'
+      + '<div class="c-row">'
+        + '<span class="c-badge '+BADGEC[lot.s]+'">'+LABEL[lot.s]+'</span>'
+        + priceHtml
+      + '</div>'
+      + '<div class="c-meta">'
+        + '<span class="chip">'+lot.ac+' ac</span>'
+        + '<span class="chip">'+lot.sf.toLocaleString()+' sqft</span>'
+        + '<span class="chip">'+lot.z+'</span>'
+      + '</div>'
+      + (lot.note ? '<div class="note">&#9679; '+lot.note+'</div>' : '')
+      + '<div class="c-footer">'
+        + '<span class="c-apn" style="margin:0;border:none;padding:0">APN '+lot.apn+'</span>'
+        + (lot.s !== 'sold' ? '<a class="c-details" href="lot.html?id='+lot.id+'">See Lot Details <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg></a>' : '')
+      + '</div>';
 
-    card.addEventListener('mouseenter', () => {
-      markers[lot.id] && markers[lot.id].openPopup();
-      map.panTo([lot.lat, lot.lng], { animate: true, duration: 0.4 });
+    card.addEventListener('mouseenter', function() {
+      var m = markers[lot.id];
+      if (m) { map.panTo([lot.lat, lot.lng], {animate:true, duration:0.4}); m.openPopup(); }
     });
 
     grid.appendChild(card);
   });
 }
 
-// ─────────────────────────────────────────────
-// FILTER LOGIC
-// ─────────────────────────────────────────────
-function getActiveStatuses() {
-  return [...document.querySelectorAll('.filter-check input')]
-    .filter(cb => cb.checked)
-    .map(cb => cb.value);
-}
-
-function applyFilters() {
-  const active = getActiveStatuses();
-  // Update map
-  lots.forEach(lot => {
-    const m = markers[lot.id];
-    if (!m) return;
-    if (active.includes(lot.status)) {
-      if (!map.hasLayer(m)) m.addTo(map);
+// ── FILTERS ──
+document.querySelectorAll('.f-btn').forEach(function(btn) {
+  var onClass = btn.classList[1]; // e.g. on-blue
+  btn.addEventListener('click', function() {
+    var status = btn.dataset.status;
+    active[status] = !active[status];
+    if (active[status]) {
+      btn.classList.add(onClass);
     } else {
-      if (map.hasLayer(m)) map.removeLayer(m);
+      btn.classList.remove(onClass);
     }
-  });
-  renderCards();
-}
-
-document.querySelectorAll('.filter-check').forEach(label => {
-  label.addEventListener('click', () => {
-    const cb = label.querySelector('input');
-    cb.checked = !cb.checked;
-    // update visual state
-    const colorClass = label.classList[1]; // active-blue etc.
-    if (cb.checked) label.classList.add(colorClass);
-    else label.classList.remove(colorClass);
-    applyFilters();
+    // Update map
+    lots.forEach(function(lot) {
+      if (lot.s !== status) return;
+      var m = markers[lot.id];
+      if (!m) return;
+      if (active[status]) { if (!map.hasLayer(m)) m.addTo(map); }
+      else { if (map.hasLayer(m)) map.removeLayer(m); }
+    });
+    renderCards();
   });
 });
 
-document.getElementById('sort-select').addEventListener('change', renderCards);
+document.getElementById('sort-sel').addEventListener('change', renderCards);
 
 // Init
 renderCards();
