@@ -207,6 +207,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
     <div class="f-btn on-teal" data-status="pending"><span class="f-dot" style="background:#2E8B6E"></span>Pending</div>
     <div class="f-btn on-gray" data-status="sold"><span class="f-dot" style="background:#B0ACA8"></span>Sold</div>
   </div>
+  <select class="sort-sel" id="zoning-sel">
+    <option value="all">All Zoning</option>
+    <option value="R1-10">R1-10</option>
+    <option value="R1L-10">R1L-10</option>
+    <option value="R1L-12">R1L-12</option>
+    <option value="R2-4">R2-4</option>
+  </select>
   <select class="sort-sel" id="sort-sel">
     <option value="default">Default Order</option>
     <option value="price-asc">Price: Low &rarr; High</option>
@@ -323,7 +330,8 @@ lots.forEach(function(lot) {
 // ── CARDS ──
 function renderCards() {
   var sortVal = document.getElementById('sort-sel').value;
-  var filtered = lots.filter(function(l) { return active[l.s]; });
+  var zoningVal = document.getElementById('zoning-sel').value;
+  var filtered = lots.filter(function(l) { return active[l.s] && (zoningVal === 'all' || l.z === zoningVal); });
 
   var statusOrder = {offmarket:0, listed:0, pending:1, sold:2};
   if (sortVal === 'default')    filtered.sort(function(a,b){return statusOrder[a.s] - statusOrder[b.s];});
@@ -385,11 +393,13 @@ document.querySelectorAll('.f-btn').forEach(function(btn) {
       btn.classList.remove(onClass);
     }
     // Update map
+    var zoningVal = document.getElementById('zoning-sel').value;
     lots.forEach(function(lot) {
       if (lot.s !== status) return;
       var m = markers[lot.id];
       if (!m) return;
-      if (active[status]) { if (!map.hasLayer(m)) m.addTo(map); }
+      var shouldShow = active[status] && (zoningVal === 'all' || lot.z === zoningVal);
+      if (shouldShow) { if (!map.hasLayer(m)) m.addTo(map); }
       else { if (map.hasLayer(m)) map.removeLayer(m); }
     });
     renderCards();
@@ -397,6 +407,18 @@ document.querySelectorAll('.f-btn').forEach(function(btn) {
 });
 
 document.getElementById('sort-sel').addEventListener('change', renderCards);
+
+document.getElementById('zoning-sel').addEventListener('change', function() {
+  var zoningVal = this.value;
+  lots.forEach(function(lot) {
+    var m = markers[lot.id];
+    if (!m) return;
+    var shouldShow = active[lot.s] && (zoningVal === 'all' || lot.z === zoningVal);
+    if (shouldShow) { if (!map.hasLayer(m)) m.addTo(map); }
+    else { if (map.hasLayer(m)) map.removeLayer(m); }
+  });
+  renderCards();
+});
 
 // Init
 renderCards();
