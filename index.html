@@ -96,6 +96,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .map-wrap{max-width:1200px;margin:24px auto 0;padding:0 24px}
 #map{height:420px;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
 @media(max-width:640px){#map{height:260px}}
+@media(max-width:640px){
+  .leaflet-top.leaflet-right{top:auto !important;bottom:0;right:0}
+  .leaflet-control.leaflet-legend-mobile{
+    font-size:9px !important;padding:5px 7px !important;min-width:0 !important;line-height:1.5 !important;
+  }
+  .leaflet-control.leaflet-legend-mobile div{margin-bottom:1px !important}
+  .leaflet-control.leaflet-legend-mobile svg{width:9px !important;height:12px !important}
+}
 
 /* FILTER */
 .filter-bar{max-width:1200px;margin:18px auto 0;padding:0 24px;display:flex;align-items:center;flex-wrap:wrap;gap:10px}
@@ -109,6 +117,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .f-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .sort-sel{margin-left:auto;font-family:'DM Sans',sans-serif;font-size:13px;padding:6px 12px;border:1.5px solid var(--border);border-radius:20px;background:var(--surface);color:var(--text);cursor:pointer;outline:none}
 .sort-sel:focus{border-color:var(--gold)}
+
+.nav-bar2{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px}
+.nav-in2{max-width:1200px;margin:0 auto;display:flex;justify-content:center;gap:24px;font-size:13px;font-weight:500;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-in2 a{color:var(--muted);text-decoration:none;white-space:nowrap;flex-shrink:0}
+.nav-in2 a.nav-active{color:var(--gold)}
+@media(max-width:500px){
+  .nav-in2{gap:16px;font-size:12px;justify-content:flex-start;padding-bottom:2px}
+}
 
 /* CARDS */
 .cards-wrap{max-width:1400px;margin:18px auto 0;padding:0 24px 40px}
@@ -172,12 +188,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 </header>
 
 <div class="accent"></div>
-<nav class="nav-bar" style="background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px">
-  <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:center;gap:24px;font-size:13px;font-weight:500">
-    <a href="index.html" style="color:var(--gold);text-decoration:none">Available Lots</a>
-    <a href="cordes-lakes-arizona.html" style="color:var(--muted);text-decoration:none">About Cordes Lakes</a>
-    <a href="cordes-junction-investment.html" style="color:var(--muted);text-decoration:none">I-17 Investment</a>
-    <a href="sell-your-land.html" style="color:var(--muted);text-decoration:none">Sell Your Land</a>
+<nav class="nav-bar2">
+  <div class="nav-in2">
+    <a href="index.html" class="nav-active">Available Lots</a>
+    <a href="cordes-lakes-arizona.html">About Cordes Lakes</a>
+    <a href="cordes-junction-investment.html">I-17 Investment</a>
+    <a href="sell-your-land.html">Sell Your Land</a>
   </div>
 </nav>
 <div class="proof">&#10003; 10 lots sold in 2026 &middot; Cordes Lakes, Mayer AZ &middot; Last updated June 15, 2026</div>
@@ -285,10 +301,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // Legend
-var legend = L.control({position:'topright'});
+var legend = L.control({position:'bottomright'});
 legend.onAdd = function() {
-  var d = L.DomUtil.create('div');
-  d.style.cssText = 'background:#fff;padding:10px 13px;border-radius:8px;font-family:DM Sans,sans-serif;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.12);line-height:2;min-width:110px';
+  var d = L.DomUtil.create('div', 'leaflet-legend-mobile');
+  d.style.cssText = 'background:#fff;padding:8px 11px;border-radius:8px;font-family:DM Sans,sans-serif;font-size:11px;box-shadow:0 2px 8px rgba(0,0,0,.12);line-height:1.7;min-width:90px';
   d.innerHTML = '<div style="font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#5A5855;margin-bottom:4px">Legend</div>'
     + '<div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><svg width="12" height="16" viewBox="0 0 22 30"><path d="M11 0C5.477 0 1 4.477 1 10c0 7.5 10 20 10 20S21 17.5 21 10C21 4.477 16.523 0 11 0z" fill="#4A6FA5" stroke="#fff" stroke-width="2"/><circle cx="11" cy="10" r="4" fill="#fff" opacity=".9"/></svg>Off MLS</div>'
     + '<div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><svg width="12" height="16" viewBox="0 0 22 30"><path d="M11 0C5.477 0 1 4.477 1 10c0 7.5 10 20 10 20S21 17.5 21 10C21 4.477 16.523 0 11 0z" fill="#C17B2F" stroke="#fff" stroke-width="2"/><circle cx="11" cy="10" r="4" fill="#fff" opacity=".9"/></svg>Listed</div>'
