@@ -211,6 +211,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
     <option value="price-desc">Price: High &rarr; Low</option>
     <option value="size-desc">Largest First</option>
     <option value="size-asc">Smallest First</option>
+    <option value="zoning">Zoning</option>
   </select>
 </div>
 
@@ -220,7 +221,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
   <p>No HOA &middot; No Sewer &middot; All lots zoned residential &middot; Yavapai County</p>
   <p>&copy; 2026 Brody DeMore &middot; Morgan Taylor Realty &middot; License #SA718514000</p>
   <p><a href="tel:4804153211">(480) 415-3211</a> &middot; <a href="mailto:brody.demore@gmail.com">brody.demore@gmail.com</a></p>
-  <p style="font-size:11px;margin-top:4px">Last updated: June 1, 2026</p>
+  <p style="font-size:11px;margin-top:4px">Last updated: June 15, 2026</p>
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
@@ -328,6 +329,7 @@ function renderCards() {
   if (sortVal === 'price-desc') filtered.sort(function(a,b){return b.p - a.p;});
   if (sortVal === 'size-desc')  filtered.sort(function(a,b){return b.sf - a.sf;});
   if (sortVal === 'size-asc')   filtered.sort(function(a,b){return a.sf - b.sf;});
+  if (sortVal === 'zoning')     filtered.sort(function(a,b){return a.z.localeCompare(b.z);});
 
   var grid = document.getElementById('cards-grid');
   grid.innerHTML = '';
