@@ -71,7 +71,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .hdr-in{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
 .hdr h1{font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-.8px;line-height:1.1}
 .hdr .sub{font-size:16px;color:var(--muted);margin-top:6px;font-weight:400}
-.hdr-r{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.hdr-r{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px;margin-left:auto}
 .hdr-r .name{font-size:15px;font-weight:600}
 .hdr-r .brok{font-size:13px;color:var(--muted)}
 .hdr-r .contact{font-size:13px;color:var(--muted)}
@@ -131,7 +131,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 @media(max-width:1100px){.cards-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:780px){.cards-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:500px){.cards-grid{grid-template-columns:1fr}}
+@media(max-width:500px){
+  .cards-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .card{padding:12px}
+  .c-addr{font-size:12.5px}
+  .c-price{font-size:15px}
+  .chip{font-size:10px;padding:2px 5px}
+}
 .card{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:default}
 .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-h)}
 .card.listed{border-left-color:var(--gold)}
@@ -294,6 +300,7 @@ var BADGEC = {offmarket:"bg-off",  listed:"bg-lst",   pending:"bg-pnd",   sold:"
 var active = {offmarket:true, listed:true, pending:true, sold:true};
 
 // ── MAP ──
+try {
 var map = L.map('map').setView([34.308, -112.109], 14);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
@@ -342,6 +349,13 @@ lots.forEach(function(lot) {
     .addTo(map);
   markers[lot.id] = m;
 });
+} catch (mapErr) {
+  console.error('Map failed to load:', mapErr);
+  var mapEl = document.getElementById('map');
+  if (mapEl) {
+    mapEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#5A5855;font-family:DM Sans,sans-serif;font-size:13px;text-align:center;padding:20px">Map temporarily unavailable</div>';
+  }
+}
 
 // ── CARDS ──
 function renderCards() {
