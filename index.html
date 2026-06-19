@@ -307,7 +307,7 @@ try {
 var isMobile = window.innerWidth <= 500;
 var map = L.map('map').setView(
   isMobile ? [34.305, -112.104] : [34.308, -112.109],
-  isMobile ? 15 : 14
+  isMobile ? 14 : 14
 );
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
