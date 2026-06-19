@@ -57,7 +57,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .nav-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px}
 .nav-in{max-width:1200px;margin:0 auto;display:flex;justify-content:center;gap:24px;font-size:13px;font-weight:500;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .nav-in a{white-space:nowrap;flex-shrink:0}
-@media(max-width:500px){.nav-in{gap:16px;font-size:12px;justify-content:flex-start}}
+@media(max-width:500px){.nav-bar{padding:8px 16px}.nav-in{gap:0;font-size:12px;justify-content:space-between;flex-wrap:wrap;overflow-x:visible;padding-bottom:0}.nav-in a{padding:5px 0;width:48%;text-align:center}}
 .nav-in a{color:var(--muted);text-decoration:none;transition:color .15s}
 .nav-in a:hover{color:var(--gold)}
 .nav-in a.active{color:var(--gold)}
