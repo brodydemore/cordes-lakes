@@ -151,8 +151,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .c-city{font-size:12px;color:var(--muted);margin-top:1px}
 .c-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
 .c-badge{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:2px 8px;border-radius:4px}
-.badge-reduced{background:#FFF3E0;color:#E65100;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 6px;border-radius:4px;margin-left:4px}
-.c-price-old{font-size:11px;color:#B0ACA8;text-decoration:line-through;margin-right:4px}
+.badge-reduced{background:#FFF3E0;color:#E65100;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 6px;border-radius:4px;margin-top:4px;display:inline-block}
+.c-price-old{font-size:13px;color:#B0ACA8;text-decoration:line-through;display:block;text-align:right;font-family:'DM Mono',monospace}
+.c-price-wrap{display:flex;flex-direction:column;align-items:flex-end}
 .bg-off{background:#EEF2F8;color:var(--blue)}
 .bg-lst{background:var(--gold-pale);color:var(--gold)}
 .bg-pnd{background:#E6F3EF;color:var(--teal)}
@@ -390,8 +391,13 @@ function renderCards() {
 
     var priceHtml = lot.s === 'sold'
       ? '<span class="c-price thru">$'+lot.p.toLocaleString()+'</span>'
-      : (lot.pp ? '<span class="c-price-old">$'+lot.pp.toLocaleString()+'</span>' : '')
-        + '<span class="c-price">$'+lot.p.toLocaleString()+'</span>';
+      : lot.pp
+        ? '<div class="c-price-wrap">'
+            + '<span class="c-price-old">$'+lot.pp.toLocaleString()+'</span>'
+            + '<span class="c-price">$'+lot.p.toLocaleString()+'</span>'
+            + '<span class="badge-reduced">&#9660; Price Reduced</span>'
+          + '</div>'
+        : '<span class="c-price">$'+lot.p.toLocaleString()+'</span>';
 
     card.innerHTML =
       (lot.s === 'sold' ? '<div class="stamp">SOLD</div>' : '')
@@ -399,7 +405,6 @@ function renderCards() {
       + '<div class="c-city">Mayer, AZ 86333</div>'
       + '<div class="c-row">'
         + '<span class="c-badge '+BADGEC[lot.s]+'">'+LABEL[lot.s]+'</span>'
-        + (lot.pp ? '<span class="badge-reduced">&#9660; Price Reduced</span>' : '')
         + priceHtml
       + '</div>'
       + '<div class="c-meta">'
