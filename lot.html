@@ -112,7 +112,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
         Download PDF
       </a>
     </div>
-    <iframe id="pdf-embed" src="" title="Lot listing sheet"></iframe>
+    <iframe id="pdf-embed" src="" title="Lot listing sheet" onload="if(this.src===window.location.href||this.src==='')this.style.display='none'" onerror="this.style.display='none';document.getElementById('pdf-fallback').style.display='flex'"></iframe>
+    <div id="pdf-fallback" style="display:none;align-items:center;justify-content:center;height:120px;color:#B0ACA8;font-family:'DM Sans',sans-serif;font-size:13px">Listing sheet coming soon</div>
   </div>
 
   <!-- SIDEBAR -->
@@ -166,28 +167,39 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 
 <script>
 var lots = [
-  {id:1,  s:"listed",    a:"20651 E Mesa Verde Rd, Unit 1",     apn:"500-04-248", p:20000, ac:0.184, sf:8003,  z:"R1L-10"},
-  {id:2,  s:"offmarket", a:"16452 S Cordes Lakes Dr, Unit 4",   apn:"500-28-262", p:20000, ac:0.284, sf:12390, z:"R1L-10"},
-  {id:3,  s:"offmarket", a:"20090 E Antelope Rd, Unit 4",       apn:"500-28-349", p:18000, ac:0.161, sf:7001,  z:"R1L-10"},
-  {id:4,  s:"offmarket", a:"16192 S Angus Cir, Unit 4",         apn:"500-28-407", p:20000, ac:0.207, sf:9011,  z:"R1L-10"},
-  {id:5,  s:"offmarket", a:"16788 S Redondo Cir, Unit 5",       apn:"500-29-087", p:25000, ac:0.294, sf:12787, z:"R1-10"},
-  {id:6,  s:"sold",      a:"20809 E Monte Vista Rd, Unit 5",    apn:"500-29-187", p:15000, ac:0.193, sf:8390,  z:"R1-10"},
-  {id:7,  s:"offmarket", a:"20940 E Monte Vista Rd, Unit 5",    apn:"500-29-202", p:16000, ac:0.161, sf:7001,  z:"R1-10"},
-  {id:8,  s:"offmarket", a:"16744 S Cordes Cir W, Unit 5",      apn:"500-29-334", p:12000, ac:0.294, sf:12802, z:"R1L-10"},
-  {id:9,  s:"offmarket", a:"19627 E Chaparral Dr, Unit 6",      apn:"500-30-489", p:20000, ac:0.318, sf:13847, z:"R1L-12", note:"Package deal (4 lots)"},
-  {id:10, s:"offmarket", a:"19613 E Chaparral Dr, Unit 6",      apn:"500-30-490", p:21000, ac:0.317, sf:13788, z:"R1L-12", note:"Package deal (4 lots)"},
-  {id:11, s:"listed",    a:"19549 E Chaparral Dr, Unit 6",      apn:"500-30-492", p:20000, ac:0.314, sf:13662, z:"R1L-12", note:"Package deal (4 lots)"},
-  {id:29, s:"offmarket", a:"19583 E Chaparral Dr, Unit 6",      apn:"500-30-491", p:20000, ac:0.315, sf:13712, z:"R1L-12", note:"Package deal (4 lots)"},
-  {id:12, s:"offmarket", a:"19758 E Antelope Rd, Unit 6",       apn:"500-30-076", p:21000, ac:0.330, sf:14376, z:"R1L-12"},
-  {id:13, s:"offmarket", a:"20619 E Mesa Verde Rd, Unit 1",     apn:"500-04-250", p:15900, ac:0.184, sf:8003,  z:"R1L-10", note:"2 lots together"},
-  {id:14, s:"listed",    a:"19827 E Stagecoach Trl, Unit 6",    apn:"500-30-145", p:22000, ac:0.233, sf:10144, z:"R2-4",   note:"Multi-family zoning"},
-  {id:15, s:"listed",    a:"19815 E Stagecoach Trl, Unit 6",    apn:"500-30-146", p:20000, ac:0.277, sf:12075, z:"R2-4",   note:"Multi-family zoning"},
-  {id:16, s:"listed",    a:"19729 E Sage Brush Dr, Unit 6",     apn:"500-30-459", p:20000, ac:0.287, sf:12497, z:"R1L-12"},
-  {id:17, s:"listed",    a:"20659 E Cactus Wren Dr, Unit 8",    apn:"500-32-294", p:17500, ac:0.202, sf:8802,  z:"R1-10"},
-  {id:18, s:"listed",    a:"19836 E Fremont Dr, Unit 5",        apn:"500-29-570", p:20000, ac:0.282, sf:12279, z:"R1L-10"},
-  {id:20, s:"listed",    a:"20544 E Wagon Way, Unit 4",         apn:"500-28-219", p:18000, ac:0.161, sf:7001,  z:"R1L-10"},
-  {id:30, s:"listed",    a:"15320 S Indian Bend Dr, Unit 8",    apn:"500-32-734", p:22000, ac:0.252, sf:10989, z:"R1L-10"},
-  {id:31, s:"offmarket", a:"19651 E Sage Brush Dr, Unit 6",     apn:"500-30-456", p:20000, ac:0.283, sf:12328, z:"R1L-12"}
+  {id:1,  s:"listed",    a:"20651 E Mesa Verde Rd, Unit 1",      apn:"500-04-248", p:20000, ac:0.184, sf:8003,  z:"R1L-10", lat:34.307105,   lng:-112.101302},
+  {id:2,  s:"listed",    a:"16452 S Cordes Lakes Dr, Unit 4",    apn:"500-28-262", p:20000, ac:0.284, sf:12390, z:"R1L-10", lat:34.3039793,  lng:-112.1059324},
+  {id:3,  s:"offmarket", a:"20090 E Antelope Rd, Unit 4",        apn:"500-28-349", p:18000, ac:0.161, sf:7001,  z:"R1L-10", lat:34.3062264,  lng:-112.109174},
+  {id:4,  s:"offmarket", a:"16192 S Angus Cir, Unit 4",          apn:"500-28-407", p:20000, ac:0.207, sf:9011,  z:"R1L-10", lat:34.3076085,  lng:-112.111124},
+  {id:5,  s:"offmarket", a:"16788 S Redondo Cir, Unit 5",        apn:"500-29-087", p:25000, ac:0.294, sf:12787, z:"R1-10",  lat:34.2996206,  lng:-112.1005257},
+  {id:6,  s:"sold",      a:"20809 E Monte Vista Rd, Unit 5",     apn:"500-29-187", p:15000, ac:0.193, sf:8390,  z:"R1-10",  lat:34.2992455,  lng:-112.097522},
+  {id:7,  s:"offmarket", a:"20940 E Monte Vista Rd, Unit 5",     apn:"500-29-202", p:16000, ac:0.161, sf:7001,  z:"R1-10",  lat:34.3003795,  lng:-112.0953114},
+  {id:8,  s:"listed", a:"16744 S Cordes Cir W, Unit 5",       apn:"500-29-334", p:11000, pp:12000, ac:0.294, sf:12802, z:"R1L-10", lat:34.3007995,  lng:-112.107142},
+  {id:9,  s:"offmarket", a:"19627 E Chaparral Dr, Unit 6",       apn:"500-30-489", p:20000, ac:0.318, sf:13847, z:"R1L-12", lat:34.3163893,  lng:-112.118199,  note:"Package deal (4 lots)"},
+  {id:10, s:"offmarket", a:"19613 E Chaparral Dr, Unit 6",       apn:"500-30-490", p:21000, ac:0.317, sf:13788, z:"R1L-12", lat:34.316623,   lng:-112.1185318, note:"Package deal (4 lots)"},
+  {id:11, s:"listed",    a:"19549 E Chaparral Dr, Unit 6",       apn:"500-30-492", p:20000, ac:0.314, sf:13662, z:"R1L-12", lat:34.3169111,  lng:-112.1193395, note:"Package deal (4 lots)"},
+  {id:29, s:"offmarket", a:"19583 E Chaparral Dr, Unit 6",       apn:"500-30-491", p:20000, ac:0.315, sf:13712, z:"R1L-12", lat:34.3167700,  lng:-112.1189500, note:"Package deal (4 lots)"},
+  {id:12, s:"offmarket", a:"19758 E Antelope Rd, Unit 6",        apn:"500-30-076", p:21000, ac:0.330, sf:14376, z:"R1L-12", lat:34.3172777,  lng:-112.1146928},
+  {id:13, s:"offmarket", a:"20619 E Mesa Verde Rd, Unit 1",      apn:"500-04-250", p:15900, ac:0.184, sf:8003,  z:"R1L-10", lat:34.306914,   lng:-112.101795,  note:"2 lots together"},
+  {id:14, s:"listed",    a:"19827 E Stagecoach Trl, Unit 6",     apn:"500-30-145", p:17000, pp:22000, ac:0.233, sf:10144, z:"R2-4",   lat:34.3186354,  lng:-112.115116,  note:"Multi-family zoning"},
+  {id:15, s:"listed",    a:"19815 E Stagecoach Trl, Unit 6",     apn:"500-30-146", p:18000, pp:20000, ac:0.277, sf:12075, z:"R2-4",   lat:34.318757,   lng:-112.115292,  note:"Multi-family zoning"},
+  {id:16, s:"listed",    a:"19729 E Sage Brush Dr, Unit 6",      apn:"500-30-459", p:20000, ac:0.287, sf:12497, z:"R1L-12", lat:34.3146347,  lng:-112.116228},
+  {id:17, s:"pending",   a:"20659 E Cactus Wren Dr, Unit 8",     apn:"500-32-294", p:17500, ac:0.202, sf:8802,  z:"R1-10",  lat:34.3205777,  lng:-112.10052},
+  {id:18, s:"listed",    a:"19836 E Fremont Dr, Unit 5",         apn:"500-29-570", p:17000, pp:20000, ac:0.282, sf:12279, z:"R1L-10", lat:34.3100939,  lng:-112.11509},
+  {id:19, s:"sold",      a:"20395 E Fremont Dr, Unit 5",         apn:"500-29-059", p:20000, ac:0.369, sf:16090, z:"R1L-10", lat:34.2995963,  lng:-112.1043705},
+  {id:20, s:"listed",    a:"20544 E Wagon Way, Unit 4",          apn:"500-28-219", p:18000, ac:0.161, sf:7001,  z:"R1L-10", lat:34.3053054,  lng:-112.103153},
+  {id:21, s:"sold",      a:"20565 E Antelope Rd, Unit 4",        apn:"500-28-154", p:15900, ac:0.165, sf:7201,  z:"R1L-10", lat:34.3043054,  lng:-112.102595},
+  {id:22, s:"sold",      a:"20376 E Antelope Rd, Unit 4",        apn:"500-28-367", p:16500, ac:0.191, sf:8305,  z:"R1L-10", lat:34.3047606,  lng:-112.105457},
+  {id:23, s:"sold",      a:"15420 S Rolling Ridge Dr, Unit 8",   apn:"500-32-225", p:18000, ac:0.212, sf:9233,  z:"R1-10",  lat:34.318078,   lng:-112.095193},
+  {id:24, s:"sold",      a:"19673 E Ironwood Dr, Unit 6",        apn:"500-30-505", p:20000, ac:0.292, sf:12705, z:"R1L-12", lat:34.3150921,  lng:-112.116656},
+  {id:25, s:"sold",      a:"19865 E Conestoga Dr, Unit 6",       apn:"500-30-194", p:20000, ac:0.230, sf:10002, z:"R1L-10", lat:34.3189769,  lng:-112.114108},
+  {id:26, s:"sold",      a:"19519 E Ironwood Dr, Unit 6",        apn:"500-30-516", p:18000, ac:0.276, sf:12038, z:"R1L-12", lat:34.3176623,  lng:-112.119781},
+  {id:27, s:"sold",      a:"19632 E Ironwood Dr, Unit 6",        apn:"500-30-524", p:20000, ac:0.313, sf:13623, z:"R1L-12", lat:34.317048,   lng:-112.117098},
+  {id:28, s:"sold",      a:"16324 S Black Mountain Rd, Unit 4",  apn:"500-28-248", p:19000, ac:0.161, sf:7001,  z:"R1L-10", lat:34.305345,   lng:-112.104185},
+  {id:30, s:"listed",    a:"15320 S Indian Bend Dr, Unit 8",     apn:"500-32-734", p:22000, ac:0.252, sf:10989, z:"R1L-10", lat:34.321332,   lng:-112.105936},
+  {id:31, s:"pending", a:"19651 E Sage Brush Dr, Unit 6",      apn:"500-30-456", p:20000, ac:0.283, sf:12328, z:"R1L-12", lat:34.314794,   lng:-112.117654},
+  {id:32, s:"listed",  a:"20209 E Ocotillo Dr, Unit 8",        apn:"500-32-793", p:22000, ac:0.27,  sf:11797, z:"R1L-10", lat:34.3218,     lng:-112.0985,   note:"Corner lot"},
+  {id:33, s:"listed",  a:"20643 E Quail Run Dr, Unit 1",       apn:"500-04-118", p:20000, ac:0.18,  sf:8002,  z:"R2-4",   lat:34.3068,     lng:-112.1005,   note:"Multi-family zoning"}
 ];
 
 var LABEL  = {offmarket:"Off MLS", listed:"Listed", pending:"Pending", sold:"Sold"};
