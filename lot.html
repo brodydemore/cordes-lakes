@@ -87,6 +87,37 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 
 /* BACK TO TOP */
 .footer-note{text-align:center;font-size:11px;color:var(--muted);padding:24px 0}
+
+/* PRICE REDUCED */
+.price-wrap{display:flex;flex-direction:column;align-items:flex-end}
+.info-price-old{font-family:'DM Mono',monospace;font-size:15px;color:#B0ACA8;text-decoration:line-through;line-height:1.2}
+.badge-reduced{background:#FFF3E0;color:#E65100;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 6px;border-radius:4px;margin-top:5px;display:inline-block}
+
+/* LEAD FORM */
+.lead-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.lead-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.lead-card .sub{font-size:12px;color:var(--muted);margin-bottom:14px}
+.lead-field{margin-bottom:10px}
+.lead-field input,.lead-field textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;transition:border-color .15s}
+.lead-field input:focus,.lead-field textarea:focus{border-color:var(--gold)}
+.lead-field textarea{resize:vertical;min-height:70px}
+.lead-submit{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;border:none;cursor:pointer;background:var(--gold);color:#fff;transition:background .15s}
+.lead-submit:hover{background:var(--gold-light)}
+.lead-submit:disabled{opacity:.6;cursor:default}
+.lead-msg{font-size:12.5px;margin-top:10px;text-align:center;display:none}
+.lead-msg.ok{display:block;color:var(--teal)}
+.lead-msg.err{display:block;color:#C0392B}
+
+/* STICKY MOBILE CALL/TEXT BAR */
+.sticky-cta{display:none}
+@media(max-width:640px){
+  body{padding-bottom:68px}
+  .sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:1000;display:flex;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid var(--border);box-shadow:0 -4px 16px rgba(26,25,22,.10)}
+  .sticky-cta a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none}
+  .sticky-cta a svg{width:16px;height:16px;flex-shrink:0}
+  .cta-call{background:var(--gold);color:#fff}
+  .cta-text{background:var(--text);color:#fff}
+}
 </style>
 </head>
 <body>
@@ -122,7 +153,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
     <div class="info-card">
       <div class="status-row">
         <span class="c-badge" id="info-badge">—</span>
-        <span class="info-price" id="info-price">—</span>
+        <div class="price-wrap">
+          <span class="info-price-old" id="info-price-old" style="display:none">—</span>
+          <span class="info-price" id="info-price">—</span>
+          <span class="badge-reduced" id="info-reduced" style="display:none">&#9660; Price Reduced</span>
+        </div>
       </div>
       <div class="info-addr" id="info-addr">—</div>
       <div class="info-city">Mayer, AZ 86333</div>
@@ -160,10 +195,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
         </div>
       </div>
     </div>
+
+    <!-- LEAD FORM -->
+    <div class="lead-card">
+      <h3>Get more info on this lot</h3>
+      <p class="sub">Not ready to call? Leave your info and I'll reach out.</p>
+      <div class="lead-field"><input type="text" id="lead-name" placeholder="Your name" autocomplete="name" /></div>
+      <div class="lead-field"><input type="tel" id="lead-phone" placeholder="Phone number" autocomplete="tel" /></div>
+      <div class="lead-field"><textarea id="lead-message" placeholder="Any questions? (optional)"></textarea></div>
+      <button type="button" class="lead-submit" id="lead-submit">Send to Brody</button>
+      <div class="lead-msg" id="lead-msg"></div>
+    </div>
   </div>
 </div>
 
 <div class="footer-note">No HOA &middot; No Sewer &middot; All lots zoned residential &middot; Yavapai County</div>
+
+<div class="sticky-cta">
+  <a class="cta-call" href="tel:4804153211">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 .01h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    Call Brody
+  </a>
+  <a class="cta-text" id="cta-text-link" href="sms:14804153211">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    Text Brody
+  </a>
+</div>
 
 <script>
 var lots = [
@@ -174,7 +231,7 @@ var lots = [
   {id:5,  s:"listed", a:"16788 S Redondo Cir, Unit 5",        apn:"500-29-087", p:25000, ac:0.294, sf:12787, z:"R1-10",  lat:34.2996206,  lng:-112.1005257},
   {id:6,  s:"sold",      a:"20809 E Monte Vista Rd, Unit 5",     apn:"500-29-187", p:15000, ac:0.193, sf:8390,  z:"R1-10",  lat:34.2992455,  lng:-112.097522},
   {id:7,  s:"offmarket", a:"20940 E Monte Vista Rd, Unit 5",     apn:"500-29-202", p:16000, ac:0.161, sf:7001,  z:"R1-10",  lat:34.3003795,  lng:-112.0953114},
-  {id:8,  s:"listed", a:"16744 S Cordes Cir W, Unit 5",       apn:"500-29-334", p:11000, pp:12000, ac:0.294, sf:12802, z:"R1L-10", lat:34.3007995,  lng:-112.107142},
+  {id:8,  s:"listed", a:"16744 S Cordes Cir W, Unit 5",       apn:"500-29-334", p:10000, pp:12000, ac:0.294, sf:12802, z:"R1L-10", lat:34.3007995,  lng:-112.107142},
   {id:9,  s:"offmarket", a:"19627 E Chaparral Dr, Unit 6",       apn:"500-30-489", p:20000, ac:0.318, sf:13847, z:"R1L-12", lat:34.3163893,  lng:-112.118199,  note:"Package deal (4 lots)"},
   {id:10, s:"offmarket", a:"19613 E Chaparral Dr, Unit 6",       apn:"500-30-490", p:21000, ac:0.317, sf:13788, z:"R1L-12", lat:34.316623,   lng:-112.1185318, note:"Package deal (4 lots)"},
   {id:11, s:"listed",    a:"19549 E Chaparral Dr, Unit 6",       apn:"500-30-492", p:20000, ac:0.314, sf:13662, z:"R1L-12", lat:34.3169111,  lng:-112.1193395, note:"Package deal (4 lots)"},
@@ -232,6 +289,11 @@ if (lot) {
   document.getElementById('info-badge').textContent = LABEL[lot.s];
   document.getElementById('info-badge').className = 'c-badge ' + BADGEC[lot.s];
   document.getElementById('info-price').textContent = '$' + lot.p.toLocaleString();
+  if (lot.pp && lot.s !== 'sold') {
+    document.getElementById('info-price-old').textContent = '$' + lot.pp.toLocaleString();
+    document.getElementById('info-price-old').style.display = 'block';
+    document.getElementById('info-reduced').style.display = 'inline-block';
+  }
   document.getElementById('info-addr').textContent = lot.a;
   document.getElementById('info-ac').textContent = lot.ac + ' ac';
   document.getElementById('info-sf').textContent = lot.sf.toLocaleString() + ' sqft';
@@ -250,10 +312,60 @@ if (lot) {
   // Pre-fill SMS body
   var smsLink = 'sms:14804153211?body=Hi%20Brody%2C%20I%27m%20interested%20in%20' + encodeURIComponent(lot.a + ', Mayer AZ 86333 ($' + lot.p.toLocaleString() + ')');
   document.getElementById('btn-text').href = smsLink;
+  document.getElementById('cta-text-link').href = smsLink;
 
 } else {
   document.getElementById('info-addr').textContent = 'Lot not found';
 }
+
+// ── LEAD FORM (Formspree) ──
+// Setup: create a free form at https://formspree.io, then replace YOUR_FORM_ID below
+// with your form's ID (it looks like: https://formspree.io/f/abcdwxyz → ID is "abcdwxyz")
+var FORMSPREE_ID = 'YOUR_FORM_ID';
+
+document.getElementById('lead-submit').addEventListener('click', function() {
+  var name = document.getElementById('lead-name').value.trim();
+  var phone = document.getElementById('lead-phone').value.trim();
+  var message = document.getElementById('lead-message').value.trim();
+  var msgEl = document.getElementById('lead-msg');
+  var btn = this;
+
+  if (!name || !phone) {
+    msgEl.textContent = 'Please enter your name and phone number.';
+    msgEl.className = 'lead-msg err';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  msgEl.className = 'lead-msg';
+
+  fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+    method: 'POST',
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      phone: phone,
+      message: message,
+      lot: lot ? (lot.a + ', Mayer AZ 86333 — $' + lot.p.toLocaleString() + ' (APN ' + lot.apn + ')') : 'Unknown lot',
+      _subject: 'New lead: ' + (lot ? lot.a : 'Cordes Lakes lot')
+    })
+  }).then(function(res) {
+    if (res.ok) {
+      msgEl.textContent = "Got it! Brody will reach out shortly.";
+      msgEl.className = 'lead-msg ok';
+      btn.textContent = 'Sent ✓';
+      if (typeof gtag === 'function') gtag('event', 'generate_lead', { lot: lot ? lot.a : 'unknown' });
+    } else {
+      throw new Error('bad response');
+    }
+  }).catch(function() {
+    msgEl.textContent = 'Something went wrong — please call or text instead.';
+    msgEl.className = 'lead-msg err';
+    btn.disabled = false;
+    btn.textContent = 'Send to Brody';
+  });
+});
 </script>
 </body>
 </html>
