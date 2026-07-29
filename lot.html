@@ -306,8 +306,11 @@ if (lot) {
   }
 
   // Pre-fill email subject with address
-  var emailLink = 'mailto:brody.demore@gmail.com?subject=Interested%20in%20' + encodeURIComponent(lot.a + ', Mayer AZ 86333');
-  document.getElementById('btn-email').href = emailLink;
+  var emailBtn = document.getElementById('btn-email');
+  if (emailBtn) {
+    var emailLink = 'mailto:brody.demore@gmail.com?subject=Interested%20in%20' + encodeURIComponent(lot.a + ', Mayer AZ 86333');
+    emailBtn.href = emailLink;
+  }
 
   // Pre-fill SMS body
   var smsLink = 'sms:14804153211?body=Hi%20Brody%2C%20I%27m%20interested%20in%20' + encodeURIComponent(lot.a + ', Mayer AZ 86333 ($' + lot.p.toLocaleString() + ')');
