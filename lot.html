@@ -141,23 +141,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 <div class="accent"></div>
 
 <div class="main">
-  <!-- PDF VIEWER -->
-  <div class="pdf-wrap">
-    <div class="pdf-header">
-      <span class="pdf-title">Property Listing Sheet</span>
-      <a id="pdf-dl" href="#" download class="pdf-download">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 13h10"/></svg>
-        Download PDF
-      </a>
-    </div>
-    <iframe id="pdf-embed" src="" title="Lot listing sheet" onload="if(this.src===window.location.href||this.src==='')this.style.display='none'" onerror="this.style.display='none';document.getElementById('pdf-fallback').style.display='flex'"></iframe>
-    <div id="pdf-fallback" style="display:none;align-items:center;justify-content:center;height:120px;color:#B0ACA8;font-family:'DM Sans',sans-serif;font-size:13px">Listing sheet coming soon</div>
-  </div>
+  <!-- LEFT: PHOTO + LOT INFO -->
+  <div class="left-col">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
+    <!-- PHOTO -->
+    <div class="photo-wrap" id="photo-wrap">
+      <img id="lot-photo" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:var(--r)" />
+      <div id="photo-fallback" style="display:flex;align-items:center;justify-content:center;height:260px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--gray);font-size:13px">No photo available</div>
+    </div>
+
     <!-- LOT INFO -->
-    <div class="info-card">
+    <div class="info-card" style="margin-top:20px">
       <div class="status-row">
         <span class="c-badge" id="info-badge">—</span>
         <div class="price-wrap">
@@ -172,17 +166,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
       <div class="info-row"><span class="lbl">Acres</span><span class="val" id="info-ac">—</span></div>
       <div class="info-row"><span class="lbl">Sq Ft</span><span class="val" id="info-sf">—</span></div>
       <div class="info-row"><span class="lbl">Zoning</span><span class="val" id="info-zone">—</span></div>
+      <div class="info-row"><span class="lbl">HOA</span><span class="val">None</span></div>
+      <div class="info-row"><span class="lbl">Water</span><span class="val">Liberty Utilities</span></div>
+      <div class="info-row"><span class="lbl">Electric</span><span class="val">APS</span></div>
       <div id="info-note-wrap" style="display:none"><span class="note-tag" id="info-note"></span></div>
       <div class="info-apn" id="info-apn">APN —</div>
+      <div style="margin-top:12px">
+        <a id="pdf-dl" href="#" download class="pdf-download" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--gold);text-decoration:none;border:1px solid var(--gold);border-radius:20px;padding:5px 14px">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 13h10"/></svg>
+          Download Listing Sheet
+        </a>
+      </div>
     </div>
+  </div>
 
+  <!-- SIDEBAR -->
+  <div class="sidebar">
     <!-- CONTACT -->
     <div class="contact-card">
       <h3>Interested in this lot?</h3>
       <p class="sub">Brody DeMore · Morgan Taylor Realty</p>
 
       <div class="lead-field"><input type="text" id="lead-name" placeholder="Your name" autocomplete="name" /></div>
-      <div class="lead-field"><input type="tel" id="lead-phone" placeholder="Phone number" autocomplete="tel" /></div>
+      <div class="lead-field"><input type="tel" id="lead-phone" placeholder="555-867-5309" autocomplete="tel" maxlength="12" /></div>
       <div class="lead-field"><textarea id="lead-message" placeholder="Any questions? (optional)"></textarea></div>
       <button type="button" class="lead-submit" id="lead-submit">Send Message</button>
       <div class="lead-msg" id="lead-msg"></div>
@@ -276,8 +282,22 @@ for (var i = 0; i < lots.length; i++) {
 if (lot) {
   var pdfPath = 'pdfs/lot_' + lot.id + '.pdf';
 
-  // PDF viewer
-  document.getElementById('pdf-embed').src = pdfPath;
+  // Photo
+  var photoEl = document.getElementById('lot-photo');
+  var photoFallback = document.getElementById('photo-fallback');
+  var photoSrc = 'photos/lot_' + lot.id + '.jpg';
+  photoEl.onload = function() {
+    photoEl.style.display = 'block';
+    photoFallback.style.display = 'none';
+  };
+  photoEl.onerror = function() {
+    photoEl.style.display = 'none';
+    photoFallback.style.display = 'flex';
+  };
+  photoEl.src = photoSrc;
+  photoEl.alt = lot.a + ', Mayer AZ';
+
+  // PDF download
   document.getElementById('pdf-dl').href = pdfPath;
   document.getElementById('pdf-dl').download = 'lot_' + lot.id + '_listing.pdf';
 
@@ -321,6 +341,16 @@ if (lot) {
   document.getElementById('info-addr').textContent = 'Lot not found';
 }
 
+// Auto-format phone number with dashes
+document.getElementById('lead-phone').addEventListener('input', function() {
+  var digits = this.value.replace(/\D/g, '').substring(0, 10);
+  var formatted = '';
+  if (digits.length > 6) formatted = digits.substring(0,3) + '-' + digits.substring(3,6) + '-' + digits.substring(6);
+  else if (digits.length > 3) formatted = digits.substring(0,3) + '-' + digits.substring(3);
+  else formatted = digits;
+  this.value = formatted;
+});
+
 // ── LEAD FORM (Formspree) ──
 var FORMSPREE_ID = 'mbdnbzeo';
 
@@ -333,6 +363,11 @@ document.getElementById('lead-submit').addEventListener('click', function() {
 
   if (!name || !phone) {
     msgEl.textContent = 'Please enter your name and phone number.';
+    msgEl.className = 'lead-msg err';
+    return;
+  }
+  if (phone.replace(/\D/g, '').length < 10) {
+    msgEl.textContent = 'Please enter a valid 10-digit phone number.';
     msgEl.className = 'lead-msg err';
     return;
   }
