@@ -473,11 +473,12 @@ lots.forEach(function(lot) {
     : (lot.pp ? '<s style="color:#B0ACA8;font-size:12px">$'+lot.pp.toLocaleString()+'</s> $'+lot.p.toLocaleString() : '$'+lot.p.toLocaleString());
   var m = L.marker([lot.lat, lot.lng], {icon:icon})
     .bindPopup(
-      '<div class="pu-addr">'+lot.a+'</div>'
+      '<img src="photos/lot_' + lot.id + '.jpg" onerror="this.style.display=\'none\'" style="width:100%;height:120px;object-fit:cover;border-radius:4px;margin-bottom:8px;display:block" />'
+      + '<div class="pu-addr">'+lot.a+'</div>'
       + '<div class="pu-price">'+priceStr+'</div>'
       + '<div class="pu-meta">'+lot.ac+' ac &middot; '+lot.sf.toLocaleString()+' sqft &middot; '+lot.z+'</div>'
       + '<div class="pu-meta">APN: '+lot.apn+'</div>'
-    )
+    , {maxWidth: 220})
     .addTo(map);
   markers[lot.id] = m;
 });

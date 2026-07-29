@@ -27,11 +27,11 @@
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
 
 /* NAV */
-.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.nav-back{display:inline-flex;align-items:center;gap:7px;color:var(--gold);text-decoration:none;font-size:14px;font-weight:600;transition:opacity .15s}
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.nav-back{display:inline-flex;align-items:center;gap:8px;color:var(--gold);text-decoration:none;font-size:17px;font-weight:700;transition:opacity .15s}
 .nav-back:hover{opacity:.75}
-.nav-back svg{width:16px;height:16px;flex-shrink:0}
-.nav-title{font-size:14px;color:var(--muted);margin-left:4px}
+.nav-back svg{width:20px;height:20px;flex-shrink:0}
+.nav-title{font-size:16px;color:var(--muted);margin-left:4px;font-weight:500}
 .accent{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light),#E8B96A)}
 
 /* MAIN LAYOUT */
@@ -100,7 +100,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .inquiry-form button:hover{background:#a8671f}
 .inquiry-success{display:none;text-align:center;padding:16px;background:#E8F5E9;border-radius:8px;color:#2E7D32;font-size:13px;font-weight:600}
 
-/* LEAD FORM */
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;align-items:center;justify-content:center;flex-direction:column}
+.lightbox.active{display:flex}
+.lightbox-img{max-width:92vw;max-height:85vh;object-fit:contain;border-radius:4px;user-select:none}
+.lightbox-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1;opacity:.8}
+.lightbox-close:hover{opacity:1}
+.lightbox-prev,.lightbox-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:36px;cursor:pointer;padding:12px 16px;border-radius:8px;line-height:1;transition:background .15s}
+.lightbox-prev{left:16px}
+.lightbox-next{right:16px}
+.lightbox-prev:hover,.lightbox-next:hover{background:rgba(255,255,255,0.3)}
+.lightbox-counter{position:absolute;bottom:20px;color:rgba(255,255,255,0.7);font-family:'DM Sans',sans-serif;font-size:14px}
 .lead-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
 .lead-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
 .lead-card .sub{font-size:12px;color:var(--muted);margin-bottom:14px}
@@ -146,7 +156,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 
     <!-- PHOTO GALLERY -->
     <div class="photo-wrap" id="photo-wrap" style="position:relative;border-radius:var(--r);overflow:hidden;background:var(--surface);border:1px solid var(--border);min-height:260px">
-      <img id="lot-photo-main" src="" alt="" style="display:none;width:100%;max-height:480px;object-fit:cover;display:block;cursor:pointer" onclick="nextPhoto()" />
+      <img id="lot-photo-main" src="" alt="" style="display:none;width:100%;max-height:480px;object-fit:cover;display:block;cursor:zoom-in" onclick="openLightbox(photoIndex)" />
       <div id="photo-fallback" style="display:flex;align-items:center;justify-content:center;height:260px;color:var(--gray);font-size:13px">No photo available</div>
       <!-- Nav arrows -->
       <button id="photo-prev" onclick="prevPhoto()" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;z-index:2">&#8249;</button>
@@ -221,6 +231,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 </div>
 
 <div class="footer-note">No HOA &middot; No Sewer &middot; All lots zoned residential &middot; Yavapai County</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
+  <button class="lightbox-prev" onclick="lbPrev(event)">&#8249;</button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+  <button class="lightbox-next" onclick="lbNext(event)">&#8250;</button>
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
 
 <div class="sticky-cta">
   <a class="cta-call" href="tel:4804153211">
@@ -329,6 +347,40 @@ if (lot) {
   window.prevPhoto = function() {
     if (photos.length > 1) showPhoto((photoIndex - 1 + photos.length) % photos.length);
   };
+
+  // Lightbox
+  var lbIndex = 0;
+  window.openLightbox = function(idx) {
+    lbIndex = idx;
+    document.getElementById('lightbox-img').src = photos[lbIndex];
+    document.getElementById('lightbox-counter').textContent = photos.length > 1 ? (lbIndex + 1) + ' / ' + photos.length : '';
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeLightbox = function(e) {
+    if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  };
+  window.lbNext = function(e) {
+    e.stopPropagation();
+    lbIndex = (lbIndex + 1) % photos.length;
+    document.getElementById('lightbox-img').src = photos[lbIndex];
+    document.getElementById('lightbox-counter').textContent = photos.length > 1 ? (lbIndex + 1) + ' / ' + photos.length : '';
+  };
+  window.lbPrev = function(e) {
+    e.stopPropagation();
+    lbIndex = (lbIndex - 1 + photos.length) % photos.length;
+    document.getElementById('lightbox-img').src = photos[lbIndex];
+    document.getElementById('lightbox-counter').textContent = photos.length > 1 ? (lbIndex + 1) + ' / ' + photos.length : '';
+  };
+  document.addEventListener('keydown', function(e) {
+    var lb = document.getElementById('lightbox');
+    if (!lb.classList.contains('active')) return;
+    if (e.key === 'ArrowRight') lbNext({stopPropagation: function(){}});
+    if (e.key === 'ArrowLeft') lbPrev({stopPropagation: function(){}});
+    if (e.key === 'Escape') { lb.classList.remove('active'); document.body.style.overflow = ''; }
+  });
 
   tryLoadPhotos(lot.id, 1);
 
