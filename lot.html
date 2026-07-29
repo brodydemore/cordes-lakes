@@ -91,7 +91,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 /* PRICE REDUCED */
 .price-wrap{display:flex;flex-direction:column;align-items:flex-end}
 .info-price-old{font-family:'DM Mono',monospace;font-size:15px;color:#B0ACA8;text-decoration:line-through;line-height:1.2}
-.badge-reduced{background:#FFF3E0;color:#E65100;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 6px;border-radius:4px;margin-top:5px;display:inline-block}
+.inquiry-form{margin-top:16px;border-top:1px solid var(--border);padding-top:16px}
+.inquiry-form h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px}
+.inquiry-form input,.inquiry-form textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);margin-bottom:8px;box-sizing:border-box;outline:none}
+.inquiry-form input:focus,.inquiry-form textarea:focus{border-color:var(--gold)}
+.inquiry-form textarea{height:80px;resize:none}
+.inquiry-form button{width:100%;padding:12px;background:var(--gold);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s}
+.inquiry-form button:hover{background:#a8671f}
+.inquiry-success{display:none;text-align:center;padding:16px;background:#E8F5E9;border-radius:8px;color:#2E7D32;font-size:13px;font-weight:600}
 
 /* LEAD FORM */
 .lead-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
@@ -319,9 +326,7 @@ if (lot) {
 }
 
 // ── LEAD FORM (Formspree) ──
-// Setup: create a free form at https://formspree.io, then replace YOUR_FORM_ID below
-// with your form's ID (it looks like: https://formspree.io/f/abcdwxyz → ID is "abcdwxyz")
-var FORMSPREE_ID = 'YOUR_FORM_ID';
+var FORMSPREE_ID = 'mbdnbzeo';
 
 document.getElementById('lead-submit').addEventListener('click', function() {
   var name = document.getElementById('lead-name').value.trim();
