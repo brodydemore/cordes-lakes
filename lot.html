@@ -144,10 +144,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
   <!-- LEFT: PHOTO + LOT INFO -->
   <div class="left-col">
 
-    <!-- PHOTO -->
-    <div class="photo-wrap" id="photo-wrap">
-      <img id="lot-photo" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:var(--r)" />
-      <div id="photo-fallback" style="display:flex;align-items:center;justify-content:center;height:260px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--gray);font-size:13px">No photo available</div>
+    <!-- PHOTO GALLERY -->
+    <div class="photo-wrap" id="photo-wrap" style="position:relative;border-radius:var(--r);overflow:hidden;background:var(--surface);border:1px solid var(--border);min-height:260px">
+      <img id="lot-photo-main" src="" alt="" style="display:none;width:100%;max-height:480px;object-fit:cover;display:block;cursor:pointer" onclick="nextPhoto()" />
+      <div id="photo-fallback" style="display:flex;align-items:center;justify-content:center;height:260px;color:var(--gray);font-size:13px">No photo available</div>
+      <!-- Nav arrows -->
+      <button id="photo-prev" onclick="prevPhoto()" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;z-index:2">&#8249;</button>
+      <button id="photo-next" onclick="nextPhoto()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;z-index:2">&#8250;</button>
+      <!-- Counter -->
+      <div id="photo-counter" style="display:none;position:absolute;bottom:10px;right:12px;background:rgba(0,0,0,0.5);color:#fff;font-size:12px;padding:3px 8px;border-radius:12px;font-family:'DM Sans',sans-serif"></div>
     </div>
 
     <!-- LOT INFO -->
@@ -282,20 +287,50 @@ for (var i = 0; i < lots.length; i++) {
 if (lot) {
   var pdfPath = 'pdfs/lot_' + lot.id + '.pdf';
 
-  // Photo
-  var photoEl = document.getElementById('lot-photo');
-  var photoFallback = document.getElementById('photo-fallback');
-  var photoSrc = 'photos/lot_' + lot.id + '.jpg';
-  photoEl.onload = function() {
-    photoEl.style.display = 'block';
-    photoFallback.style.display = 'none';
+  // Photo carousel
+  var photos = [];
+  var photoIndex = 0;
+
+  function tryLoadPhotos(id, n) {
+    var src = 'photos/lot_' + id + (n === 1 ? '' : '_' + n) + '.jpg';
+    var img = new Image();
+    img.onload = function() {
+      photos.push(src);
+      tryLoadPhotos(id, n + 1);
+    };
+    img.onerror = function() {
+      if (photos.length > 0) showPhoto(0);
+      else document.getElementById('photo-fallback').style.display = 'flex';
+    };
+    img.src = src;
+  }
+
+  function showPhoto(idx) {
+    var mainImg = document.getElementById('lot-photo-main');
+    var counter = document.getElementById('photo-counter');
+    var prev = document.getElementById('photo-prev');
+    var next = document.getElementById('photo-next');
+    var fallback = document.getElementById('photo-fallback');
+    photoIndex = idx;
+    mainImg.src = photos[idx];
+    mainImg.style.display = 'block';
+    fallback.style.display = 'none';
+    if (photos.length > 1) {
+      counter.style.display = 'block';
+      counter.textContent = (idx + 1) + ' / ' + photos.length;
+      prev.style.display = 'block';
+      next.style.display = 'block';
+    }
+  }
+
+  window.nextPhoto = function() {
+    if (photos.length > 1) showPhoto((photoIndex + 1) % photos.length);
   };
-  photoEl.onerror = function() {
-    photoEl.style.display = 'none';
-    photoFallback.style.display = 'flex';
+  window.prevPhoto = function() {
+    if (photos.length > 1) showPhoto((photoIndex - 1 + photos.length) % photos.length);
   };
-  photoEl.src = photoSrc;
-  photoEl.alt = lot.a + ', Mayer AZ';
+
+  tryLoadPhotos(lot.id, 1);
 
   // PDF download
   document.getElementById('pdf-dl').href = pdfPath;
